@@ -1,0 +1,51 @@
+radar_signature AIR_TO_GROUND_WEAPON_RADAR_SIGNATURE
+   constant 0.01 m^2
+end_radar_signature
+
+radar_signature AIR_TO_AIR_WEAPON_RADAR_SIGNATURE
+   constant 0.0001 m^2
+end_radar_signature
+
+radar_signature SURFACE_TO_AIR_WEAPON_RADAR_SIGNATURE
+   constant 0.03 m^2
+end_radar_signature
+
+radar_signature AIRCRAFT_INVISIBLE_RADAR_SIGNATURE
+   constant 0.01 m^2
+end_radar_signature
+
+radar_signature AIRCRAFT_RADAR_SIGNATURE
+   constant 1 m^2
+end_radar_signature
+
+radar_signature FIGHTER_RADAR_SIGNATURE
+   constant 1 m^2
+end_radar_signature
+
+radar_signature RECON_AIRCRAFT_RADAR_SIGNATURE
+   constant 1 m^2
+end_radar_signature
+
+radar_signature UAV_RECON_AIRCRAFT_RADAR_SIGNATURE
+   constant 0.05 m^2
+end_radar_signature
+
+radar_signature VEHICLE_RADAR_SIGNATURE
+   constant 3 m^2
+end_radar_signature
+
+radar_signature SHIP_RADAR_SIGNATURE
+   constant 10 m^2
+end_radar_signature
+
+radar_signature DESTROYER_RADAR_SIGNATURE
+   constant 10 m^2
+end_radar_signature
+
+radar_signature AIRCRAFT_CARRIER_RADAR_SIGNATURE
+   constant 10 m^2
+end_radar_signature
+
+radar_signature GROUND_TARGET_RADAR_SIGNATURE
+   constant 100 m^2
+end_radar_signature

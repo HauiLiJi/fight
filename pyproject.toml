@@ -1,0 +1,33 @@
+[project]
+name = "air-combat-challenge"
+version = "0.1.0"
+description = "Python command and observation interface for an AFSIM air-combat scenario"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "grpcio>=1.80.0,<1.82.0",
+    "pydantic>=2.8.0,<3.0.0",
+    "protobuf==3.20.0",
+]
+
+[project.scripts]
+air-combat = "air_combat_challenge.competition.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["air_combat_challenge*"]
+
+[tool.setuptools.package-data]
+"air_combat_challenge.protocol" = ["*.proto"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/air_combat_challenge/protocol/afsim_pb2.py" = ["E402"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.0,<1.0.0",
+]

@@ -1,0 +1,21 @@
+// base_platform
+include_once ../equipment/FighterSixDof.txt
+// weapons
+include_once ../parts/weapon/ag_missile_short.txt
+include_once ../parts/weapon/aa_missile_short.txt
+include_once ../parts/weapon/aa_missile_medium.txt
+
+platform_type F22 FighterSixDof
+   weapon agm_short AG_MISSILE_SHORT
+      quantity 0
+   end_weapon
+
+   weapon aam_short AA_MISSILE_SHORT
+      quantity 2
+   end_weapon
+
+   weapon aam_medium AA_MISSILE_MEDIUM
+      quantity 6
+   end_weapon
+
+end_platform_type

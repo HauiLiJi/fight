@@ -1,0 +1,358 @@
+
+observer
+  enable PLATFORM_BROKEN PlatformBroken
+  enable WEAPON_HIT WeaponHit
+  enable WEAPON_MISSED WeaponMissed
+  enable WEAPON_FIRED WeaponFired
+  enable SENSOR_TURNED_ON SensorTurnedOn
+  enable SENSOR_TURNED_OFF SensorTurnedOff
+end_observer
+
+script_variables
+   WsfJsonObject data = WsfJsonObject.Create();
+   WsfJsonObject red = WsfJsonObject.Create();
+   WsfJsonObject blue = WsfJsonObject.Create();
+   WsfJsonObject fly = WsfJsonObject.Create();
+   WsfJsonObject pos = WsfJsonObject.Create();
+   WsfJsonObject targetJson = WsfJsonObject.Create();
+   WsfJsonObject vel = WsfJsonObject.Create();
+   WsfJsonObject target_vel = WsfJsonObject.Create();
+   WsfJsonObject att = WsfJsonObject.Create();
+   WsfJsonObject weapons = WsfJsonObject.Create();
+   WsfJsonObject sensorJson = WsfJsonObject.Create();
+   WsfJsonObject weaponJson = WsfJsonObject.Create();
+end_script_variables
+
+script_variables
+   int event_max_size = 200;
+   int event_seq = 0;
+   WsfJsonObject events = WsfJsonObject.Create();
+   WsfJsonObject event = WsfJsonObject.Create();
+   Array<WsfJsonObject> event_list = Array<WsfJsonObject>();
+end_script_variables
+
+script void PlatformBroken(WsfPlatform aPlatform) 
+   events.Clear();
+   event = WsfJsonObject.Create();
+   event.SetInt("event_id",event_seq);
+   event_seq += 1;
+   event.SetInt("sim_time",TIME_NOW);
+   event.SetString("event_type","PlatformBroken");
+   event.SetString("platform",aPlatform.Name());
+   if(event_list.Size() == event_max_size)
+   {
+      event_list.EraseAt(0);
+   }
+   event_list.PushBack(event);
+   for(int iter = 0;iter < event_list.Size();iter+=1)
+   {
+      events.SetObject((string)iter,event_list[iter]);
+   }
+   WsfGrpcServer.SetGrpcData("events",events.ToText());  
+end_script
+
+script void WeaponHit(WsfWeaponEngagement aWeaponEngagement, WsfPlatform aTargetPlatform) 
+   events.Clear();
+   event = WsfJsonObject.Create();
+   event.SetInt("event_id",event_seq);
+   event_seq += 1;
+   event.SetInt("sim_time",aWeaponEngagement.StartTime());
+   event.SetString("event_type","WeaponHit");
+   event.SetString("shooter",aWeaponEngagement.FiringPlatformName());
+   event.SetString("weapon",aWeaponEngagement.WeaponSystemType());
+   event.SetString("target",aWeaponEngagement.TargetPlatformName());
+   
+   if(event_list.Size() == event_max_size)
+   {
+      event_list.EraseAt(0);
+   }
+   event_list.PushBack(event);
+   for(int iter = 0;iter < event_list.Size();iter+=1)
+   {
+      events.SetObject((string)iter,event_list[iter]);
+   }
+   WsfGrpcServer.SetGrpcData("events",events.ToText());  
+end_script
+
+script void WeaponMissed(WsfWeaponEngagement aWeaponEngagement, WsfPlatform aTargetPlatform) 
+   events.Clear();
+   event = WsfJsonObject.Create();
+   event.SetInt("event_id",event_seq);
+   event_seq += 1;
+   event.SetInt("sim_time",aWeaponEngagement.StartTime());
+   event.SetString("event_type","WeaponMissed");
+   event.SetString("shooter",aWeaponEngagement.FiringPlatformName());
+   event.SetString("weapon",aWeaponEngagement.WeaponSystemType());
+   event.SetString("target",aWeaponEngagement.TargetPlatformName());
+   
+   if(event_list.Size() == event_max_size)
+   {
+      event_list.EraseAt(0);
+   }
+   event_list.PushBack(event);
+   for(int iter = 0;iter < event_list.Size();iter+=1)
+   {
+      events.SetObject((string)iter,event_list[iter]);
+   }
+   WsfGrpcServer.SetGrpcData("events",events.ToText());  
+end_script
+
+script void WeaponFired(WsfWeaponEngagement aWeaponEngagement, WsfTrack aTargetTrack) 
+   events.Clear();
+   event = WsfJsonObject.Create();
+   event.SetInt("event_id",event_seq);
+   event_seq += 1;
+   event.SetInt("sim_time",aWeaponEngagement.StartTime());
+   event.SetString("event_type","WeaponFired");
+   event.SetString("shooter",aWeaponEngagement.FiringPlatformName());
+   event.SetString("weapon",aWeaponEngagement.WeaponSystemType());
+   event.SetString("target",aWeaponEngagement.TargetPlatformName());
+   
+   if(event_list.Size() == event_max_size)
+   {
+      event_list.EraseAt(0);
+   }
+   event_list.PushBack(event);
+   for(int iter = 0;iter < event_list.Size();iter+=1)
+   {
+      events.SetObject((string)iter,event_list[iter]);
+   }
+   WsfGrpcServer.SetGrpcData("events",events.ToText());  
+end_script
+
+
+script void SensorTurnedOff(WsfPlatform aPlatform, WsfSensor aSensor) 
+   events.Clear();
+   event = WsfJsonObject.Create();
+   event.SetInt("event_id",event_seq);
+   event_seq += 1;
+   event.SetInt("sim_time",TIME_NOW);
+   event.SetString("event_type","SensorTurnedOff");
+   event.SetString("platform",aPlatform.Name());
+   event.SetString("sensor",aSensor.Name());
+   
+   if(event_list.Size() == event_max_size)
+   {
+      event_list.EraseAt(0);
+   }
+   event_list.PushBack(event);
+   for(int iter = 0;iter < event_list.Size();iter+=1)
+   {
+      events.SetObject((string)iter,event_list[iter]);
+   }
+   WsfGrpcServer.SetGrpcData("events",events.ToText());  
+end_script
+
+script void SensorTurnedOn(WsfPlatform aPlatform, WsfSensor aSensor) 
+   events.Clear();
+   event = WsfJsonObject.Create();
+   event.SetInt("event_id",event_seq);
+   event_seq += 1;
+   event.SetInt("sim_time",TIME_NOW);
+   event.SetString("event_type","SensorTurnedOn");
+   event.SetString("platform",aPlatform.Name());
+   event.SetString("sensor",aSensor.Name());
+   
+   if(event_list.Size() == event_max_size)
+   {
+      event_list.EraseAt(0);
+   }
+   event_list.PushBack(event);
+   for(int iter = 0;iter < event_list.Size();iter+=1)
+   {
+      events.SetObject((string)iter,event_list[iter]);
+   }
+   WsfGrpcServer.SetGrpcData("events",events.ToText());
+end_script
+
+
+script void OutputData()
+   // User-defined behavior: WsfJsonObject operations
+   data.Clear();
+   data.SetDouble("time",TIME_NOW);
+   #red data
+   for(int i = 0; i < WsfSimulation.PlatformCount(); i+=1)
+   {
+      fly.Clear();
+      WsfPlatform platform = WsfSimulation.PlatformEntry(i);
+      if (!platform.IsValid())
+      {
+             continue;
+      }
+      # fly Location
+      pos.Clear();
+      fly.SetInt("id", platform.Index());
+      fly.SetString("contactType",platform.Type());
+      pos.SetDouble("Longitude",platform.Longitude());
+      pos.SetDouble("Latitude",platform.Latitude());
+      pos.SetDouble("Altitude",platform.Altitude());
+      
+      fly.SetObject("pos",pos);
+      # fly Velocity
+      fly.SetDouble("speed",platform.Speed());
+      
+      Vec3 v = platform.VelocityNED();
+      vel.SetDouble("vel_north",v.X());
+      vel.SetDouble("vel_up",-v.Y());
+      vel.SetDouble("vel_east",v.Z());
+      fly.SetObject("vel",vel);
+      
+      # fly Orientation
+      att.Clear();
+      att.SetDouble("heading",platform.Heading());
+      att.SetDouble("pitch",platform.Pitch());
+      att.SetDouble("roll",platform.Roll());
+      fly.SetObject("att",att);
+
+       #sensor
+      if(platform.SensorCount() > 0)
+      {
+         sensorJson.Clear();
+         WsfSensor sensor = platform.SensorEntry(0);
+         sensorJson.SetInt("on", sensor.IsTurnedOn());
+         sensorJson.SetDouble("heading",sensor.CurrentCuedAzimuth());
+         fly.SetObject("sensor",sensorJson);
+      }
+
+      # Situation Contact        
+      targetJson.Clear();
+      WsfLocalTrackList list =  platform.MasterTrackList();
+      for(int i = 0 ; i < list.Size(); i+=1)
+      {
+         WsfLocalTrack tempTrack =  list.Get(i);
+         WsfPlatform target = tempTrack.Target();
+         if (!target.IsValid()) {
+            continue;
+         }
+         
+         WsfJsonObject platformData = WsfJsonObject.Create();
+         platformData.SetString("target_name", target.Name());
+         platformData.SetString("target_sideName", target.Side());
+         platformData.SetString("target_model", target.Type());
+         platformData.SetDouble("target_Longitude", target.Longitude());
+         platformData.SetDouble("target_Latitude", target.Latitude());
+         platformData.SetDouble("target_Altitude", target.Altitude());
+         
+         target_vel.Clear();
+         Vec3 tv = target.VelocityNED();
+         target_vel.SetDouble("target_vel_north",tv.X());
+         target_vel.SetDouble("target_vel_up",-tv.Y());
+         target_vel.SetDouble("target_vel_east",tv.Z());
+         platformData.SetObject("target_vel",target_vel);
+         
+         platformData.SetDouble("target_heading", target.Heading());
+         platformData.SetDouble("target_pitch", target.Pitch());
+         platformData.SetDouble("target_roll", target.Roll());
+         targetJson.SetObject(target.Name(),platformData);
+      }
+      #Weapon
+      weapons.Clear();
+      if(platform.WeaponCount() > 0)
+      {
+         for (int i=0; i < platform.WeaponCount(); i+=1)
+         {
+            WsfWeapon weapon = platform.WeaponEntry(i);
+            if (!weapon.IsValid())
+            {
+                continue;
+            }
+            weaponJson.Clear();
+            weaponJson.SetString("type", weapon.Type());
+            weaponJson.SetInt("on", weapon.IsTurnedOn());
+            weaponJson.SetDouble("count", weapon.QuantityRemaining());
+            weaponJson.SetDouble("TimeSinceLastFired", weapon.TimeSinceLastFired());
+            weapons.SetObject(weapon.Name(),weaponJson);
+         }
+      }
+      fly.SetObject("weapons", weapons);
+      if (platform.CategoryMemberOf("fighter"))
+      {
+        fly.SetString("entity_type", "fighter");
+      }
+      else if (platform.CategoryMemberOf("bomber"))
+      {
+        fly.SetString("entity_type", "bomber");
+      }
+      else if (platform.CategoryMemberOf("aew"))
+      {
+        fly.SetString("entity_type", "aew");
+      }
+      else if (platform.CategoryMemberOf("recon_aircraft"))
+      {
+        fly.SetString("entity_type", "recon_aircraft");
+      }
+      else if (platform.CategoryMemberOf("uav_recon_aircraft"))
+      {
+        fly.SetString("entity_type", "uav_recon_aircraft");
+      }
+      else if (platform.CategoryMemberOf("jammer"))
+      {
+        fly.SetString("entity_type", "jammer");
+      }
+      else if (platform.CategoryMemberOf("airport"))
+      {
+        fly.SetString("entity_type", "airport");
+      }
+      else if (platform.CategoryMemberOf("aircraft_carrier"))
+      {
+        fly.SetString("entity_type", "aircraft_carrier");
+      }
+      else if (platform.CategoryMemberOf("destroyer"))
+      {
+        fly.SetString("entity_type", "destroyer");
+      }
+      else if(platform.CategoryMemberOf("ground_launcher") || platform.CategoryMemberOf("launcher"))
+      {
+         fly.SetString("entity_type", "launcher");
+      }
+      else if (platform.CategoryMemberOf("ground_radar"))
+      {
+        fly.SetString("entity_type", "ground_radar");
+      }
+      else if (platform.CategoryMemberOf("missile"))
+      {
+        fly.SetString("entity_type", "missile");
+      }
+      else if (platform.CategoryMemberOf("agm_missile"))
+      {
+        fly.SetString("entity_type", "missile");
+      }
+      else if (platform.CategoryMemberOf("aircraft"))
+      {
+        fly.SetString("entity_type", "aircraft");
+      }
+      else if (platform.CategoryMemberOf("ship"))
+      {
+        fly.SetString("entity_type", "ship");
+      }
+      else if (platform.CategoryMemberOf("ground"))
+      {
+        fly.SetString("entity_type", "ground");
+      }
+      fly.SetObject("targets", targetJson);
+
+      if(platform.Side() == "red")
+      {
+         red.SetObject(platform.Name(), fly);
+      }
+      else if (platform.Side() == "blue")
+      {
+         blue.SetObject(platform.Name(), fly);
+      }
+  }
+
+  data.SetObject("red", red);
+  data.SetObject("blue", blue);
+
+  WsfGrpcServer.SetGrpcData("SituationData", data.ToText());
+
+  red.Clear();
+  blue.Clear();
+end_script
+
+
+
+
+
+
+

@@ -1,0 +1,487 @@
+// Basic Functions
+script WsfPlatform FindValidPlatform(string aPlatformName)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    if(plat.IsNull() || !plat.IsValid())
+    {
+        print(aPlatformName, " is not exist");
+    }
+    return plat;
+end_script
+
+script WsfWeapon FindReadyWeapon(WsfPlatform aPlatform, string aWeaponName)
+    WsfWeapon weapon = aPlatform.Weapon(aWeaponName);
+    if(weapon.IsNull())
+    {
+        print("weapon is not exist");
+        return weapon;
+    }
+    if(weapon.QuantityRemaining() == 0)
+    {
+        print("weapon quantity is 0");
+    }
+    return weapon;
+end_script
+
+script void GoToLocation(string id,double lat,double lon,double alt)
+   WsfPlatform plat = FindValidPlatform(id);
+   if(plat.IsNull() || !plat.IsValid())
+   {
+      return;
+   }
+   if(!plat.CategoryMemberOf("aircraft"))
+   {
+      return;
+   }
+   plat.GoToLocation(lat,lon,alt);
+end_script
+
+script void GoToSpeed(string id,double speed)
+   WsfPlatform plat = FindValidPlatform(id);
+   if(plat.IsNull() || !plat.IsValid())
+   {
+      return;
+   }
+   if(!plat.CategoryMemberOf("aircraft"))
+   {
+      return;
+   }
+   plat.GoToSpeed(speed);
+end_script
+
+script void FlyHeadingSpeedAltitude(string aPlatformName,       # Platform name (e.g., "blue_2")
+                                    double fAltitude,           # Flight altitude (meters)
+                                    double fHeading,            # Heading (degrees)
+                                    double fMach)
+    
+    WsfPlatform plat = FindValidPlatform(aPlatformName);
+    if(plat.IsNull() || !plat.IsValid())
+    {
+        return;
+    }
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.GoToAltitude(fAltitude); 
+    plat.TurnToHeading(fHeading);
+    plat.GoToMachNumber(fMach);
+    print("FlyHeadingSpeedAltitude executed-----------");
+end_script
+
+script void FlyAltitude(string aPlatformName,       # Platform name (e.g., "blue_2")
+                        double fAltitude)
+    WsfPlatform plat = FindValidPlatform(aPlatformName);
+    if(plat.IsNull() || !plat.IsValid())
+    {
+        return;
+    }
+    WsfProcessor sliceBackProc = plat.Processor("slice_back_manuever_proc");
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.GoToAltitude(fAltitude);
+    print(aPlatformName, " FlyAltitude executed-----------: ", fAltitude);
+end_script
+
+script void FlyHeading(string aPlatformName,       # Platform name (e.g., "blue_2")
+                       double fHeading)
+                       
+    WsfPlatform plat = FindValidPlatform(aPlatformName);
+    if(plat.IsNull() || !plat.IsValid())
+    {
+        return;
+    }
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.TurnToHeading(fHeading);
+    print("FlyHeading executed-----------");
+end_script
+
+script void FlySpeed(string aPlatformName,       # Platform name (e.g., "blue_2")
+                     double fSpeed)
+    WsfPlatform plat = FindValidPlatform(aPlatformName);
+    if(plat.IsNull() || !plat.IsValid())
+    {
+        return;
+    }
+    WsfProcessor sliceBackProc = plat.Processor("slice_back_manuever_proc");
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.GoToSpeed(fSpeed);
+    print(aPlatformName, " FlySpeed executed-----------: ", fSpeed);
+end_script
+
+script void AttackTarget(string aPlatformName,       # Platform name (e.g., "blue_2")
+                         string aWeaponName,
+                         string aTargetName)
+    WsfPlatform plat = FindValidPlatform(aPlatformName);
+    WsfPlatform target = FindValidPlatform(aTargetName);
+    if(plat.IsNull() || !plat.IsValid() || target.IsNull() || !target.IsValid())
+    {
+      print("plat or target is not exist");
+      return;
+    }
+    WsfWeapon weapon = FindReadyWeapon(plat, aWeaponName);
+    if(weapon.IsNull() || weapon.QuantityRemaining() == 0)
+    {
+       return;
+    }
+    foreach (WsfTrack atrack in plat.MasterTrackList())
+    {
+       if (atrack.IsValid() && !atrack.IsNull() && atrack.TargetName() == aTargetName)
+       {
+          weapon.CueToTarget(atrack);
+          weapon.Fire(atrack);
+          print("weapon fired");
+          return;
+       }
+    }
+    print("target track not found");
+end_script
+
+script void  CoAttackTarget(string aPlatformName,
+                            string aWeaponName,
+                            string aTargetName,
+                            string aGuiderName)
+    WsfPlatform plat = FindValidPlatform(aPlatformName);
+    WsfPlatform target = FindValidPlatform(aTargetName);
+    WsfPlatform guider = FindValidPlatform(aGuiderName);
+    if(plat.IsNull() || !plat.IsValid() ||
+       target.IsNull() || !target.IsValid() ||
+       guider.IsNull() || !guider.IsValid())
+    {
+        print("plat or target or guider is not exist");
+        return;
+    }
+    WsfWeapon weapon = FindReadyWeapon(plat, aWeaponName);
+    if(weapon.IsNull() || weapon.QuantityRemaining() == 0)
+    {
+        return;
+    }
+    foreach(WsfTrack track in guider.MasterTrackList())
+    {
+        if(track.TargetName() == aTargetName)
+        {
+            weapon.CueToTarget(track);
+            weapon.Fire(track);
+            print("weapon fired");
+            return;
+        }
+    }
+    print("target track not found");
+end_script
+
+script void FlyInPath(string aPlatformName,      
+                      string aRoute,
+                      bool bIsCycle)
+                      
+   WsfPlatform plat = FindValidPlatform(aPlatformName);
+   if(!plat.IsValid())
+   {
+      return;
+   }
+   Array<string> point_array = aRoute.Split(";");
+   WsfRoute path = WsfRoute();
+   int size = point_array.Size();
+   for(int iter = 0;iter<size;iter+=1)
+   {
+      Array<string> point = point_array[iter].Split(","); 
+      WsfWaypoint way_point = WsfWaypoint.Create((double)point[0],
+                                                 (double)point[1],
+                                                 (double)point[2],
+                                                 (double)point[3],
+                                                 "LATITUDE_AND_LONGITUDE");
+      if(iter == 0 && bIsCycle)
+      {
+         way_point.SetLabel("start");
+      }
+      if(iter == size -1 &&bIsCycle)
+      {
+         way_point.SetGoToLabel("start");
+      }
+      path.Append(way_point);
+   }
+   plat.FollowRoute(path);   
+end_script
+
+script void SwitchSensorState(string aPlatformName,       # Platform name (e.g., "blue_2")
+                              string aSensor,
+                              bool bState)
+    
+end_script
+
+script void DeletePlatform(string aPlatformName)
+   WsfPlatform plat = FindValidPlatform(aPlatformName);
+   if(plat.IsNull() || !plat.IsValid())
+   {
+      return;
+   }
+   WsfSimulation.DeletePlatform(aPlatformName);
+end_script
+
+script void LauncherSensorCue(string aPlatformName,
+                              double heading)
+   WsfPlatform plat = FindValidPlatform(aPlatformName);
+   if(plat.IsNull() || !plat.IsValid() ||
+      (!plat.CategoryMemberOf("ground_launcher") 
+    && !plat.CategoryMemberOf("ground_radar")
+    && !plat.CategoryMemberOf("destroyer")))
+   {
+      return;
+   }
+   WsfSensor sensor = plat.SensorEntry(0);
+   if(!sensor.IsValid())
+   {
+      return;
+   }
+   sensor.CueToAbsoluteAzEl(heading,0);
+
+end_script
+
+script bool Takeoff(string aPlatformName, string aTakeOffPlatformName,
+                    string aTakeOffPlatformType, double fLatitude,
+                    double fLongitude, double fAltitude, double fSpeed)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    if(plat.IsNull() || !plat.IsValid() ||
+      (!plat.CategoryMemberOf("aircraft_carrier") &&
+       !plat.CategoryMemberOf("airport")))
+    {
+        return false;
+    }
+    Array<Object> args = Array<Object>();
+    args.PushBack(aTakeOffPlatformName);
+    args.PushBack(aTakeOffPlatformType);
+    args.PushBack(fLatitude);
+    args.PushBack(fLongitude);
+    args.PushBack(fAltitude);
+    args.PushBack(fSpeed);
+    plat.ExecuteScriptWithArgs("TakeOff", args);
+    return true;
+end_script
+
+script void CreatePlatform(string id,string type,string side,
+                       double heading,double pitch,double roll,
+                       double lat,double lon,double alt,double speed)
+   WsfPlatform plat = WsfSimulation.CreatePlatform(type);
+   if(!plat.IsValid())
+   {
+      return;
+   }
+
+   plat.SetSide(side);
+   WsfPlatform point = WsfSimulation.AddPlatform(plat,id);
+   point.SetLocation(lat,lon,alt);
+   point.GoToSpeed(speed);
+   point.TurnToHeading(heading);
+   point.GoToAltitude(alt);
+end_script
+
+
+
+//-------------------------------------------------------
+
+script void ExitLoft(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Altitude
+    double fPitchAngle
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+   //  WsfProcessor sliceBackProc = plat.Processor("slice_back_manuever_proc");
+   //  sliceBackProc->NeedSliceBack = false;
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.GoToAltitude(fAltitude);
+    mover.SetAutopilotPitchAngle(fPitchAngle);
+    print("ExitLoft executed-----------", aPlatformName, fAltitude);
+end_script
+
+// 1. Pump straight maneuver
+script void PumpManeuver(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Flight altitude (meters)
+    double fHeading,            # Heading (degrees)
+    double fPitchAngle,
+    double fMach,               # Mach number
+    double fOverload,           # G-load
+    bool bBanAfterburner,       # Ban afterburner flag
+    double fAfterburnerLimit,   # Afterburner limit percentage
+    int nFrameAngleTargets,     # Frame angle constraint target count
+    string aTargetName,
+    string aFireMatePlatformName
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    mover.SetPitchGLoadMax(fOverload);
+    plat.GoToAltitude(fAltitude);
+    plat.TurnToHeading(fHeading);
+    plat.GoToMachNumber(fMach);
+    print(aPlatformName, " PumpAltHdgControl executed-----------");
+end_script
+
+script void StopSliceBack(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fHeading            # Heading (degrees)
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    plat.TurnToHeading(fHeading);
+end_script
+
+// 2. Pump snake maneuver
+script void PumpSnakeManeuver(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Flight altitude (meters)
+    double fHeading,            # Heading (degrees)
+    double fPitchAngle,
+    double fMach,               # Mach number
+    double fOverload,           # G-load
+    bool bBanAfterburner,       # Ban afterburner flag
+    double fAfterburnerLimit,   # Afterburner limit percentage
+    int nFrameAngleTargets,     # Frame angle constraint target count
+    string aTargetName,
+    string aFireMatePlatformName
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    plat.GoToAltitude(fAltitude);
+    plat.TurnToHeading(fHeading);
+    plat.GoToMachNumber(fMach);
+    print(aPlatformName, " PumpSnakeAltHdgControl executed-----------");
+end_script
+
+script void StartSnakeAfterPump(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Flight altitude (meters)
+    double fHeading,            # Heading (degrees)
+    double fMach                # Mach number
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    plat.GoToAltitude(fAltitude); 
+    plat.TurnToHeading(fHeading);
+    plat.GoToMachNumber(fMach);
+    print("StartSnakeAfterPump executed-----------");
+end_script
+
+// 3. Reentry maneuver
+script void ReentryManeuver(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Flight altitude (meters)
+    double fHeading,            # Heading (degrees)
+    double fPitchAngle,
+    double fMach,               # Mach number
+    double fOverload,           # G-load
+    bool bBanAfterburner,       # Ban afterburner flag
+    double fAfterburnerLimit,   # Afterburner limit percentage
+    int nFrameAngleTargets,     # Frame angle constraint target count
+    string aTargetName,
+    string aFireMatePlatformName
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    mover.SetPitchGLoadMax(fOverload);
+    plat.TurnToHeading(fHeading);
+    plat.GoToMachNumber(fMach);
+    print("ReentryManeuver executed-----------");
+end_script
+
+// 4. Weapon expansion maneuver
+script void WezExpansionManeuver(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Flight altitude (meters)
+    double fHeading,            # Heading (degrees)
+    double fPitchAngle,
+    double fMach,               # Mach number
+    double fOverload,           # G-load
+    bool bBanAfterburner,       # Ban afterburner flag
+    double fAfterburnerLimit,   # Afterburner limit percentage
+    int nFrameAngleTargets,     # Frame angle constraint target count
+    string aTargetName,
+    string aFireMatePlatformName
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.GoToAltitude(fAltitude);
+    plat.TurnToHeading(fHeading);
+    plat.GoToMachNumber(fMach);
+    print(aPlatformName, " WezExpansionManeuver executed-----------");
+end_script
+
+// 5. LOFT maneuver
+script void LoftManeuver(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Flight altitude (meters)
+    double fHeading,            # Heading (degrees)
+    double fPitchAngle,
+    double fMach,               # Mach number
+    double fOverload,           # G-load
+    bool bBanAfterburner,       # Ban afterburner flag
+    double fAfterburnerLimit,   # Afterburner limit percentage
+    int nFrameAngleTargets,     # Frame angle constraint target count
+    string aTargetName,
+    string aFireMatePlatformName
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.TurnToHeading(fHeading);
+    mover.SetAutopilotPitchAngle(fPitchAngle);
+    plat.GoToMachNumber(fMach);
+    print("LoftManeuver executed-----------", aPlatformName, fPitchAngle);
+end_script
+
+// 6. Sprint maneuver
+script void SprintManeuver(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Flight altitude (meters)
+    double fHeading,            # Heading (degrees)
+    double fPitchAngle,
+    double fMach,               # Mach number
+    double fOverload,           # G-load
+    bool bBanAfterburner,       # Ban afterburner flag
+    double fAfterburnerLimit,   # Afterburner limit percentage
+    int nFrameAngleTargets,     # Frame angle constraint target count
+    string aTargetName,
+    string aFireMatePlatformName
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.GoToAltitude(fAltitude);
+    plat.TurnToHeading(fHeading);
+    plat.GoToMachNumber(fMach);
+    print(aPlatformName," SprintManeuver executed: ",fAltitude," ", fHeading, " ", fMach);
+end_script
+
+// 7. F-Pole maneuver
+script void FPoleManeuver(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Flight altitude (meters)
+    double fHeading,            # Heading (degrees)
+    double fPitchAngle,
+    double fMach,               # Mach number
+    double fOverload,           # G-load
+    bool bBanAfterburner,       # Ban afterburner flag
+    double fAfterburnerLimit,   # Afterburner limit percentage
+    int nFrameAngleTargets,     # Frame angle constraint target count
+    string aTargetName,
+    string aFireMatePlatformName
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.GoToAltitude(fAltitude);
+    plat.TurnToHeading(fHeading);
+    plat.GoToMachNumber(fMach);
+    print("FPoleManeuver executed-----------");
+end_script
+
+// 8. Head-on snake maneuver
+script void HeadOnSnakeManeuver(
+    string aPlatformName,       # Platform name (e.g., "blue_2")
+    double fAltitude,           # Flight altitude (meters)
+    double fHeading,            # Heading (degrees)
+    double fPitchAngle,
+    double fMach,               # Mach number
+    double fOverload,           # G-load
+    bool bBanAfterburner,       # Ban afterburner flag
+    double fAfterburnerLimit,   # Afterburner limit percentage
+    int nFrameAngleTargets,     # Frame angle constraint target count
+    string aTargetName,
+    string aFireMatePlatformName
+)
+    WsfPlatform plat = WsfSimulation.FindPlatform(aPlatformName);
+    WsfSixDOF_Mover mover = (WsfSixDOF_Mover) plat.Mover();
+    plat.GoToAltitude(fAltitude); 
+    plat.TurnToHeading(fHeading);
+    plat.GoToMachNumber(fMach);
+    print("HeadOnSnakeManeuver executed-----------");
+end_script
+
+

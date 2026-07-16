@@ -1,0 +1,57 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "action_index": {
+      "minimum": 0,
+      "title": "Action Index",
+      "type": "integer"
+    },
+    "action_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Action Id"
+    },
+    "action_type": {
+      "title": "Action Type",
+      "type": "string"
+    },
+    "platform_id": {
+      "title": "Platform Id",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "accepted",
+        "rejected",
+        "execution_error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "reason_code": {
+      "title": "Reason Code",
+      "type": "string"
+    },
+    "message": {
+      "default": "",
+      "title": "Message",
+      "type": "string"
+    }
+  },
+  "required": [
+    "action_index",
+    "action_type",
+    "platform_id",
+    "status",
+    "reason_code"
+  ],
+  "title": "ActionReportV1",
+  "type": "object"
+}

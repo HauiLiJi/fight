@@ -1,0 +1,53 @@
+antenna_pattern AA_MRM_RADAR_ANTENNA
+  sine_pattern
+     peak_gain            31 db            
+     minimum_gain         -10 db           
+     azimuth_beamwidth    4.6 deg          
+     elevation_beamwidth  4.6 deg         
+  end_sine_pattern
+end_antenna_pattern
+
+sensor AA_MISSILE_RADAR  WSF_RADAR_SENSOR
+   ignore_same_side
+   ignore_domain land
+   
+   maximum_request_count          1
+
+   frame_time                     .50 sec       # unknown
+
+   one_m2_detect_range            25 km         # from aa_mrm.txt documentation
+
+   maximum_range                  200 km         # unknown
+
+   slew_mode                      azimuth_and_elevation   # Ref 1
+   azimuth_slew_limits            -30.0 deg 30.0 deg      # Ref 1
+   elevation_slew_limits          -20.0 deg 10.0 deg      # Ref 1
+
+   scan_mode                      azimuth_and_elevation
+   azimuth_scan_limits            -30.0 deg 30.0 deg
+   elevation_scan_limits          -20.0 deg 10.0 deg
+      
+   hits_to_establish_track  2 3   
+   hits_to_maintain_track   1 3   
+
+   transmitter
+      antenna_pattern             AA_MRM_RADAR_ANTENNA
+      power                       500 w         # unknown
+      frequency                   9000 mhz      # assuming X-band
+      pulse_width                 1.0 usec      # unknown
+      pulse_repetition_frequency  3600 hz       # unknown
+   end_transmitter
+
+   receiver
+      antenna_pattern             AA_MRM_RADAR_ANTENNA
+      bandwidth                   1.0 mhz       # use inverse of pulse width
+   end_receiver
+
+   reports_velocity
+   reports_side
+   reports_location
+   reports_range
+   reports_bearing
+   reports_signal_to_noise
+   reports_type
+end_sensor

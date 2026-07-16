@@ -1,0 +1,414 @@
+{
+  "$defs": {
+    "AttitudeV1": {
+      "additionalProperties": false,
+      "properties": {
+        "heading_deg": {
+          "default": 0.0,
+          "title": "Heading Deg",
+          "type": "number"
+        },
+        "pitch_deg": {
+          "default": 0.0,
+          "title": "Pitch Deg",
+          "type": "number"
+        },
+        "roll_deg": {
+          "default": 0.0,
+          "title": "Roll Deg",
+          "type": "number"
+        }
+      },
+      "title": "AttitudeV1",
+      "type": "object"
+    },
+    "EventV1": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "minimum": 0,
+          "title": "Event Id",
+          "type": "integer"
+        },
+        "sim_time": {
+          "title": "Sim Time",
+          "type": "number"
+        },
+        "event_type": {
+          "title": "Event Type",
+          "type": "string"
+        },
+        "platform": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Platform"
+        },
+        "shooter": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Shooter"
+        },
+        "weapon": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Weapon"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target"
+        },
+        "sensor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sensor"
+        }
+      },
+      "required": [
+        "event_id",
+        "sim_time",
+        "event_type"
+      ],
+      "title": "EventV1",
+      "type": "object"
+    },
+    "ObservationV1": {
+      "additionalProperties": false,
+      "properties": {
+        "api_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Api Version",
+          "type": "string"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "step_index": {
+          "minimum": 0,
+          "title": "Step Index",
+          "type": "integer"
+        },
+        "sim_time": {
+          "title": "Sim Time",
+          "type": "number"
+        },
+        "side": {
+          "enum": [
+            "blue",
+            "red"
+          ],
+          "title": "Side",
+          "type": "string"
+        },
+        "controlled_platform_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Controlled Platform Ids",
+          "type": "array"
+        },
+        "own_units": {
+          "items": {
+            "$ref": "#/$defs/UnitStateV1"
+          },
+          "title": "Own Units",
+          "type": "array"
+        },
+        "tracks": {
+          "items": {
+            "$ref": "#/$defs/TrackStateV1"
+          },
+          "title": "Tracks",
+          "type": "array"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/EventV1"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "mission": {
+          "additionalProperties": true,
+          "title": "Mission",
+          "type": "object"
+        }
+      },
+      "required": [
+        "episode_id",
+        "step_index",
+        "sim_time",
+        "side",
+        "controlled_platform_ids",
+        "own_units",
+        "tracks"
+      ],
+      "title": "ObservationV1",
+      "type": "object"
+    },
+    "PositionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "longitude": {
+          "title": "Longitude",
+          "type": "number"
+        },
+        "latitude": {
+          "title": "Latitude",
+          "type": "number"
+        },
+        "altitude_m": {
+          "title": "Altitude M",
+          "type": "number"
+        }
+      },
+      "required": [
+        "longitude",
+        "latitude",
+        "altitude_m"
+      ],
+      "title": "PositionV1",
+      "type": "object"
+    },
+    "SensorStateV1": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "cue_azimuth": {
+          "default": 0.0,
+          "title": "Cue Azimuth",
+          "type": "number"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "title": "SensorStateV1",
+      "type": "object"
+    },
+    "TrackStateV1": {
+      "additionalProperties": false,
+      "properties": {
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        },
+        "target_side": {
+          "title": "Target Side",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/$defs/PositionV1"
+        },
+        "velocity": {
+          "$ref": "#/$defs/VelocityV1"
+        },
+        "attitude": {
+          "$ref": "#/$defs/AttitudeV1"
+        },
+        "detected_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Detected By",
+          "type": "array"
+        }
+      },
+      "required": [
+        "target_id",
+        "target_side",
+        "model",
+        "position",
+        "velocity",
+        "attitude"
+      ],
+      "title": "TrackStateV1",
+      "type": "object"
+    },
+    "UnitStateV1": {
+      "additionalProperties": false,
+      "properties": {
+        "platform_id": {
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "side": {
+          "enum": [
+            "blue",
+            "red"
+          ],
+          "title": "Side",
+          "type": "string"
+        },
+        "entity_type": {
+          "title": "Entity Type",
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/$defs/PositionV1"
+        },
+        "velocity": {
+          "$ref": "#/$defs/VelocityV1"
+        },
+        "attitude": {
+          "$ref": "#/$defs/AttitudeV1"
+        },
+        "sensor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SensorStateV1"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "weapons": {
+          "items": {
+            "$ref": "#/$defs/WeaponStateV1"
+          },
+          "title": "Weapons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "platform_id",
+        "side",
+        "entity_type",
+        "position",
+        "velocity",
+        "attitude"
+      ],
+      "title": "UnitStateV1",
+      "type": "object"
+    },
+    "VelocityV1": {
+      "additionalProperties": false,
+      "properties": {
+        "north_mps": {
+          "default": 0.0,
+          "title": "North Mps",
+          "type": "number"
+        },
+        "east_mps": {
+          "default": 0.0,
+          "title": "East Mps",
+          "type": "number"
+        },
+        "up_mps": {
+          "default": 0.0,
+          "title": "Up Mps",
+          "type": "number"
+        }
+      },
+      "title": "VelocityV1",
+      "type": "object"
+    },
+    "WeaponStateV1": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "weapon_type": {
+          "title": "Weapon Type",
+          "type": "string"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "count": {
+          "minimum": 0,
+          "title": "Count",
+          "type": "integer"
+        },
+        "time_since_last_fired_s": {
+          "default": 0.0,
+          "title": "Time Since Last Fired S",
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "weapon_type",
+        "enabled",
+        "count"
+      ],
+      "title": "WeaponStateV1",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "api_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Api Version",
+      "type": "string"
+    },
+    "episode_id": {
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "observations": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ObservationV1"
+      },
+      "title": "Observations",
+      "type": "object"
+    }
+  },
+  "required": [
+    "episode_id",
+    "observations"
+  ],
+  "title": "EpisodeStartV1",
+  "type": "object"
+}

@@ -1,0 +1,52 @@
+{
+    "aircrafts": {
+        "blue_fighter_01": {
+            "plat_id": "blue_fighter_01",
+            "plat_type": "F22",
+            "side": "blue",
+            "heading": 270,
+            "pitch": 0.0,
+            "roll": 0.0,
+            "lat": 0.0,
+            "lon": 2,
+            "alt": 8000.0,
+            "speed": 300.0
+        },
+        "blue_fighter_02": {
+            "plat_id": "blue_fighter_02",
+            "plat_type": "F22",
+            "side": "blue",
+            "heading": 270,
+            "pitch": 0.0,
+            "roll": 0.0,
+            "lat": 0.1,
+            "lon": 2,
+            "alt": 8000.0,
+            "speed": 300.0
+        },
+        "red_fighter_01": {
+            "plat_id": "red_fighter_01",
+            "plat_type": "F22",
+            "side": "red",
+            "heading": 90,
+            "pitch": 0.0,
+            "roll": 0.0,
+            "lat": 0.0,
+            "lon": 0.0,
+            "alt": 8000.0,
+            "speed": 300.0
+        },
+        "red_fighter_02": {
+            "plat_id": "red_fighter_02",
+            "plat_type": "F22",
+            "side": "red",
+            "heading": 90,
+            "pitch": 0.0,
+            "roll": 0.0,
+            "lat": 0.1,
+            "lon": 0.0,
+            "alt": 8000.0,
+            "speed": 300.0
+        }
+    }
+}

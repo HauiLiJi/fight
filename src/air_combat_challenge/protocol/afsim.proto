@@ -1,0 +1,68 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+package proto;
+
+enum ParamTypeEnum {
+    bool = 0;
+  	int = 1;
+  	double = 2;
+  	string = 3;
+}
+
+enum SimServerStateEnum {
+  pendingInitialize = 0;
+  initializing = 1;
+  pendingStart = 2;
+  starting =3;
+  active = 4;
+  pendingComplete = 5;
+  complete = 6;
+}
+
+message SimSpeedUpTo {
+  int64 speedUp = 1;
+}
+
+message AdvanceStepTo {
+  double time = 1;
+}
+
+message ResponseData {
+  int32 code = 1;
+  double simTime = 2;
+  string message = 3;
+}
+
+message SendCommand {
+  string funcName = 1;
+  repeated Params params = 2;
+}
+
+message Params {
+  string name = 1;
+  string value = 2;
+  ParamTypeEnum type = 3;
+}
+
+message GetSimData {
+  string dataType = 1;
+}
+
+message SimServerStateResponse {
+  SimServerStateEnum state = 1;
+}
+
+service SimulationService{
+  rpc resume(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc pause(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc stop(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc reset(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc getSimServerState(google.protobuf.Empty) returns (SimServerStateResponse) {}
+
+  rpc simSpeedUpTo(SimSpeedUpTo) returns (google.protobuf.Empty) {}
+  rpc advanceStepTo(AdvanceStepTo) returns(google.protobuf.Empty) {}
+  rpc getSimData(GetSimData) returns (ResponseData){}
+
+  rpc sendCommand(SendCommand) returns (ResponseData) {}
+
+}

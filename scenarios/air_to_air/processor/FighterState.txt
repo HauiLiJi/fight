@@ -1,0 +1,118 @@
+processor FIGHTER_STATE WSF_TASK_PROCESSOR
+   number_of_servers 40
+
+   script bool IsMissileTrack()
+      string targetType = TRACK.TargetType();
+      return (targetType == "AG_MISSILE_SHORT_ENTITY" ||
+              targetType == "AG_MISSILE_MEDIUM_ENTITY" ||
+              targetType == "AG_MISSILE_LONG_ENTITY" ||
+              targetType == "GA_MISSILE_SHORT_ENTITY" ||
+              targetType == "GA_MISSILE_MEDIUM_ENTITY" ||
+              targetType == "GA_MISSILE_LONG_ENTITY" ||
+              targetType == "AA_MISSILE_SHORT_ENTITY" ||
+              targetType == "AA_MISSILE_MEDIUM_ENTITY" ||
+              targetType == "AA_MISSILE_LONG_ENTITY");
+   end_script
+
+   script bool IsShipTrack()
+      return (!IsMissileTrack());
+   end_script
+
+   script WsfWeapon SelectStrikeWeapon()
+      WsfWeapon weapon = PLATFORM.Weapon("agm_medium");
+      if(!weapon.IsNull() && weapon.IsTurnedOn() && weapon.QuantityRemaining() > 0)
+      {
+         return weapon;
+      }
+      weapon = PLATFORM.Weapon("agm_short");
+      if(!weapon.IsNull() && weapon.IsTurnedOn() && weapon.QuantityRemaining() > 0)
+      {
+         return weapon;
+      }
+      weapon = PLATFORM.Weapon("agm_long");
+      return weapon;
+   end_script
+
+   script bool HasStrikeWeapon()
+      WsfWeapon weapon = SelectStrikeWeapon();
+      return (!weapon.IsNull() && weapon.IsTurnedOn() && weapon.QuantityRemaining() > 0);
+   end_script
+
+   script void EvadeFiveKm()
+      PLATFORM.GoToLocation(PLATFORM.Latitude() + 0.045045,
+                            PLATFORM.Longitude(),
+                            PLATFORM.Altitude() + 800.0);
+      PLATFORM.GoToSpeed(320.0);
+   end_script
+
+   script void ForcePenetrate()
+      PLATFORM.TurnToHeading(90.0);
+      PLATFORM.GoToAltitude(10000.0);
+      PLATFORM.GoToSpeed(300.0);
+   end_script
+
+   script bool InStrikeEnvelope(WsfWeapon aWeapon)
+      double range = PLATFORM.SlantRangeTo(TRACK);
+      return (!aWeapon.IsNull() && range > 20000.0 && range < 230000.0);
+   end_script
+
+   script bool LaunchStrike(WsfWeapon aWeapon)
+      if(aWeapon.IsNull() || !aWeapon.IsTurnedOn() || aWeapon.QuantityRemaining() <= 0)
+      {
+         return false;
+      }
+      if(!InStrikeEnvelope(aWeapon))
+      {
+         return false;
+      }
+      if(WeaponsActiveFor(TRACK.TrackId()) > 0)
+      {
+         return false;
+      }
+      bool launched = FireAt(TRACK, "Strike", aWeapon, 1);
+      if(launched)
+      {
+         EvadeFiveKm();
+      }
+      return launched;
+   end_script
+
+   evaluation_interval DETECTED 2.0 sec
+   state DETECTED
+      next_state STRIKE
+         return (TRACK.BelievedAlive() && IsShipTrack() && HasStrikeWeapon());
+      end_next_state
+
+      next_state EVADE
+         return (TRACK.BelievedAlive() && IsMissileTrack());
+      end_next_state
+
+      next_state PENETRATE
+         return (!HasStrikeWeapon());
+      end_next_state
+   end_state
+
+   evaluation_interval EVADE 4.0 sec
+   state EVADE
+      next_state DETECTED
+         EvadeFiveKm();
+         return true;
+      end_next_state
+   end_state
+
+   evaluation_interval STRIKE 2.0 sec
+   state STRIKE
+      next_state EVADE
+         WsfWeapon weapon = SelectStrikeWeapon();
+         return LaunchStrike(weapon);
+      end_next_state
+   end_state
+
+   evaluation_interval PENETRATE 5.0 sec
+   state PENETRATE
+      next_state DETECTED
+         ForcePenetrate();
+         return true;
+      end_next_state
+   end_state
+end_processor

@@ -1,0 +1,28 @@
+include_once ../parts/radar/fighter_radar.txt
+
+include_once ../parts/mover/plane_sixdof_mover.txt
+
+include_once ../scripts/radar_sig.txt
+
+platform_type FighterSixDof WSF_PLATFORM
+   category aircraft
+   category fighter
+   icon f22
+
+   mover PLANE_SIXDOF_MOVER
+   end_mover
+
+   sensor fighter_radar FIGHTER_RADAR
+      on
+      update_interval 0.1 s
+      ignore_same_side
+      internal_link track_processor
+   end_sensor
+
+   processor track_processor WSF_TRACK_PROCESSOR
+   end_processor
+
+   radar_signature FIGHTER_RADAR_SIGNATURE
+
+end_platform_type
+

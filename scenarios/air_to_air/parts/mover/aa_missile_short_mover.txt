@@ -1,0 +1,18 @@
+aero AA_MISSILE_SHORT_AERO WSF_AERO
+   cd_zero_subsonic    0.12
+   cd_zero_supersonic  0.20
+   mach_begin_cd_rise  0.95
+   mach_end_cd_rise    1.3
+   mach_max_supersonic 4.0
+   reference_area      0.017 m2
+   cl_max              5.0
+end_aero
+
+
+mover AA_MISSILE_SHORT_MOVER WSF_GUIDED_MOVER
+    total_mass       90 kg
+    fuel_mass        35 kg
+    thrust           3500 lbf
+    thrust_duration  20.0 sec
+    aero             AA_MISSILE_SHORT_AERO
+end_mover

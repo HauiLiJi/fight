@@ -1,0 +1,8 @@
+
+grpc_server
+   frame_time 1 s
+   address 0.0.0.0
+   port 19920
+end_grpc_server
+
+realtime

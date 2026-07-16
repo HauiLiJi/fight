@@ -1,0 +1,50 @@
+include_once ../radar/aa_missile_radar.txt
+include_once ../mover/aa_missile_short_mover.txt
+include_once ../../scripts/radar_sig.txt
+
+
+platform_type AA_MISSILE_SHORT_ENTITY WSF_PLATFORM
+   icon Missile
+   radar_signature AIR_TO_AIR_WEAPON_RADAR_SIGNATURE
+
+   mover AA_MISSILE_SHORT_MOVER
+      update_interval  0.05 s
+   end_mover
+
+   processor track_processor WSF_WEAPON_TRACK_PROCESSOR
+     turn_on_sensor seeker at_range 10000.0 m to_target
+      update_interval 0.1 sec
+   end_processor
+
+   sensor seeker AA_MISSILE_RADAR
+      off
+      internal_link track_processor
+   end_sensor
+
+   processor computer WSF_GUIDANCE_COMPUTER
+     proportional_navigation_gain  455.0
+     g_bias                        1.2
+     maximum_commanded_g           80.0 g
+     update_interval               0.01 s
+   end_processor
+
+   processor fuse WSF_AIR_TARGET_FUSE
+     max_time_of_flight_to_detonate  30.0 sec
+   end_processor
+end_platform_type
+
+weapon_effects AA_MISSILE_SHORT_EFFECT WSF_GRADUATED_LETHALITY
+   radius_and_pk 10.0 m 1
+end_weapon_effects
+
+weapon AA_MISSILE_SHORT WSF_EXPLICIT_WEAPON
+   launched_platform_type AA_MISSILE_SHORT_ENTITY
+   weapon_effects              AA_MISSILE_SHORT_EFFECT
+   automatic_target_cueing     true
+   firing_delay                0.5 sec
+   firing_interval             1 sec
+   salvo_interval              1.0 sec
+   slew_mode                   azimuth_and_elevation
+   azimuth_slew_limits         -30.0 deg 30.0 deg
+   elevation_slew_limits       -30.0 deg 30.0 deg
+end_weapon

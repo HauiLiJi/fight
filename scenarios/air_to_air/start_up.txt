@@ -1,0 +1,11 @@
+file_path .
+
+include_once platform/F22.txt
+
+include_once scripts/CollectData.txt
+include_once scripts/command.txt
+include_once scripts/grpc_config.txt
+
+number_of_runs 1
+
+end_time 100 min

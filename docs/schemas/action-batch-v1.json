@@ -1,0 +1,400 @@
+{
+  "$defs": {
+    "CoFireActionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "platform_id": {
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "type": {
+          "const": "co_fire",
+          "title": "Type",
+          "type": "string"
+        },
+        "weapon_name": {
+          "title": "Weapon Name",
+          "type": "string"
+        },
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        },
+        "guider_id": {
+          "title": "Guider Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "platform_id",
+        "type",
+        "weapon_name",
+        "target_id",
+        "guider_id"
+      ],
+      "title": "CoFireActionV1",
+      "type": "object"
+    },
+    "FireActionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "platform_id": {
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "type": {
+          "const": "fire",
+          "title": "Type",
+          "type": "string"
+        },
+        "weapon_name": {
+          "title": "Weapon Name",
+          "type": "string"
+        },
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "platform_id",
+        "type",
+        "weapon_name",
+        "target_id"
+      ],
+      "title": "FireActionV1",
+      "type": "object"
+    },
+    "FlyPathActionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "platform_id": {
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "type": {
+          "const": "fly_path",
+          "title": "Type",
+          "type": "string"
+        },
+        "waypoints": {
+          "items": {
+            "$ref": "#/$defs/WaypointV1"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Waypoints",
+          "type": "array"
+        },
+        "cycle": {
+          "default": false,
+          "title": "Cycle",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "platform_id",
+        "type",
+        "waypoints"
+      ],
+      "title": "FlyPathActionV1",
+      "type": "object"
+    },
+    "SetAltitudeActionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "platform_id": {
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "type": {
+          "const": "set_altitude",
+          "title": "Type",
+          "type": "string"
+        },
+        "altitude_m": {
+          "maximum": 20000.0,
+          "minimum": 1000.0,
+          "title": "Altitude M",
+          "type": "number"
+        }
+      },
+      "required": [
+        "platform_id",
+        "type",
+        "altitude_m"
+      ],
+      "title": "SetAltitudeActionV1",
+      "type": "object"
+    },
+    "SetFlightActionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "platform_id": {
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "type": {
+          "const": "set_flight",
+          "title": "Type",
+          "type": "string"
+        },
+        "heading_deg": {
+          "exclusiveMaximum": 360.0,
+          "minimum": 0.0,
+          "title": "Heading Deg",
+          "type": "number"
+        },
+        "altitude_m": {
+          "maximum": 20000.0,
+          "minimum": 1000.0,
+          "title": "Altitude M",
+          "type": "number"
+        },
+        "mach": {
+          "maximum": 2.0,
+          "minimum": 0.2,
+          "title": "Mach",
+          "type": "number"
+        }
+      },
+      "required": [
+        "platform_id",
+        "type",
+        "heading_deg",
+        "altitude_m",
+        "mach"
+      ],
+      "title": "SetFlightActionV1",
+      "type": "object"
+    },
+    "SetHeadingActionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "platform_id": {
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "type": {
+          "const": "set_heading",
+          "title": "Type",
+          "type": "string"
+        },
+        "heading_deg": {
+          "exclusiveMaximum": 360.0,
+          "minimum": 0.0,
+          "title": "Heading Deg",
+          "type": "number"
+        }
+      },
+      "required": [
+        "platform_id",
+        "type",
+        "heading_deg"
+      ],
+      "title": "SetHeadingActionV1",
+      "type": "object"
+    },
+    "SetSpeedActionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "platform_id": {
+          "title": "Platform Id",
+          "type": "string"
+        },
+        "type": {
+          "const": "set_speed",
+          "title": "Type",
+          "type": "string"
+        },
+        "speed_mps": {
+          "maximum": 700.0,
+          "minimum": 50.0,
+          "title": "Speed Mps",
+          "type": "number"
+        }
+      },
+      "required": [
+        "platform_id",
+        "type",
+        "speed_mps"
+      ],
+      "title": "SetSpeedActionV1",
+      "type": "object"
+    },
+    "WaypointV1": {
+      "additionalProperties": false,
+      "properties": {
+        "latitude": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180.0,
+          "minimum": -180.0,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "altitude_m": {
+          "maximum": 20000.0,
+          "minimum": 1000.0,
+          "title": "Altitude M",
+          "type": "number"
+        },
+        "speed_mps": {
+          "maximum": 700.0,
+          "minimum": 50.0,
+          "title": "Speed Mps",
+          "type": "number"
+        }
+      },
+      "required": [
+        "latitude",
+        "longitude",
+        "altitude_m",
+        "speed_mps"
+      ],
+      "title": "WaypointV1",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "api_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Api Version",
+      "type": "string"
+    },
+    "actions": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "co_fire": "#/$defs/CoFireActionV1",
+            "fire": "#/$defs/FireActionV1",
+            "fly_path": "#/$defs/FlyPathActionV1",
+            "set_altitude": "#/$defs/SetAltitudeActionV1",
+            "set_flight": "#/$defs/SetFlightActionV1",
+            "set_heading": "#/$defs/SetHeadingActionV1",
+            "set_speed": "#/$defs/SetSpeedActionV1"
+          },
+          "propertyName": "type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/SetFlightActionV1"
+          },
+          {
+            "$ref": "#/$defs/SetHeadingActionV1"
+          },
+          {
+            "$ref": "#/$defs/SetAltitudeActionV1"
+          },
+          {
+            "$ref": "#/$defs/SetSpeedActionV1"
+          },
+          {
+            "$ref": "#/$defs/FlyPathActionV1"
+          },
+          {
+            "$ref": "#/$defs/FireActionV1"
+          },
+          {
+            "$ref": "#/$defs/CoFireActionV1"
+          }
+        ]
+      },
+      "maxItems": 64,
+      "title": "Actions",
+      "type": "array"
+    }
+  },
+  "title": "ActionBatchV1",
+  "type": "object"
+}

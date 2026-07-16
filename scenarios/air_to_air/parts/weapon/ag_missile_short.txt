@@ -1,0 +1,104 @@
+include_once ../radar/ag_missile_radar.txt
+include_once ../mover/ag_missile_short_mover.txt
+include_once ../../scripts/radar_sig.txt
+
+
+platform_type AG_MISSILE_SHORT_ENTITY WSF_PLATFORM
+  icon Missile
+  radar_signature AIR_TO_GROUND_WEAPON_RADAR_SIGNATURE
+
+  mover AG_MISSILE_SHORT_MOVER
+      update_interval  0.05 s
+  end_mover
+
+  sensor seeker AG_MISSILE_RADAR
+    off
+    internal_link track_processor
+  end_sensor
+
+   processor track_processor WSF_WEAPON_TRACK_PROCESSOR
+      turn_on_sensor seeker at_range 8000.0 m to_target
+      update_interval 0.1 sec
+   end_processor
+
+   processor computer WSF_GUIDANCE_COMPUTER
+     update_interval               0.01 s
+     phase STABILIZE
+        commanded_flight_path_angle  0.0 deg
+        commanded_speed              900.0 m/s
+        g_bias                       1.0
+        proportional_navigation_gain 0.0
+        velocity_pursuit_gain        0.0
+        maximum_commanded_g          10.0 g
+        maximum_pitch_angle          3.0 deg
+        next_phase SELECT when phase_time > 1.5 sec
+     end_phase
+     phase SELECT
+        commanded_flight_path_angle  0.0 deg
+        commanded_speed              900.0 m/s
+        g_bias                       1.0
+        proportional_navigation_gain 0.0
+        velocity_pursuit_gain        0.0
+        maximum_commanded_g          10.0 g
+        maximum_pitch_angle          3.0 deg
+        next_phase CRUISE when target_slant_range > 50000.0 m
+        next_phase DIVE when phase_time > 0.1 sec
+     end_phase
+     phase CRUISE
+        commanded_altitude            8500.0 m msl
+        commanded_speed               900.0 m/s
+        g_bias                        1.0
+        proportional_navigation_gain  2.0
+        velocity_pursuit_gain         1.0
+        maximum_commanded_g           12.0 g
+        maximum_pitch_angle           6.0 deg
+        guidance_target               truth
+        next_phase DIVE when target_slant_range < 35000.0 m
+     end_phase
+     phase DIVE
+        commanded_flight_path_angle   -4.0 deg
+        commanded_speed               850.0 m/s
+        g_bias                        1.0
+        proportional_navigation_gain  10.0
+        velocity_pursuit_gain         5.0
+        maximum_commanded_g           25.0 g
+        maximum_pitch_angle           10.0 deg
+        maximum_descent_rate          120.0 m/s
+        guidance_target               truth
+        next_phase TERMINAL when target_slant_range < 10000.0 m
+     end_phase
+     phase TERMINAL
+        commanded_speed               850.0 m/s
+        g_bias                        1.0
+        proportional_navigation_gain  18.0
+        velocity_pursuit_gain         8.0
+        maximum_commanded_g           35.0 g
+        maximum_pitch_angle           18.0 deg
+        maximum_descent_rate          300.0 m/s
+        guidance_target               truth
+     end_phase
+   end_processor
+
+   processor fuse WSF_GROUND_TARGET_FUSE
+     maximum_time_of_flight          95.0 sec
+     max_time_of_flight_to_detonate  95.0 sec
+   end_processor
+end_platform_type
+
+weapon_effects AG_MISSILE_SHORT_EFFECT WSF_GRADUATED_LETHALITY
+   radius_and_pk 100.0 m 0.6
+end_weapon_effects
+
+weapon AG_MISSILE_SHORT WSF_EXPLICIT_WEAPON
+   launched_platform_type      AG_MISSILE_SHORT_ENTITY
+   weapon_effects              AG_MISSILE_SHORT_EFFECT
+   automatic_target_cueing     true
+   firing_delay                1.0 sec
+   salvo_interval              3.0 sec
+   slew_mode                   azimuth_and_elevation
+   azimuth_slew_limits         -180.0 deg 180.0 deg
+   elevation_slew_limits       0.0 deg 0.0 deg
+   tilt                        0.0 deg
+   ignore_launch_platform_velocity true
+   launch_delta_v              900.0 0.0 0.0 m/s
+end_weapon

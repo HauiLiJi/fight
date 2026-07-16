@@ -1,0 +1,40 @@
+include_once plane_six_dof_mover_dependence/prop/LTE_FIGHTER_Eng.txt
+
+include_once plane_six_dof_mover_dependence/environment/six_dof_environment.txt
+
+mover PLANE_SIXDOF_MOVER WSF_POINT_MASS_SIX_DOF_MOVER
+    vehicle_type LTE_FIGHTER_PM6
+    update_interval 0.05 sec
+end_mover
+   
+six_dof_object_types
+
+   point_mass_vehicle_type   LTE_FIGHTER_PM6   BASE_TYPE
+
+      include plane_six_dof_mover_dependence/aero/aero_pm6.txt
+      include plane_six_dof_mover_dependence/controls/control_inputs_pm6.txt
+      include plane_six_dof_mover_dependence/controls/flight_controls_pm6.txt
+
+
+      mass_properties
+         mass	36109.999986200004 lbs
+      end_mass_properties
+
+      propulsion_data
+         fuel_tank MainFuelTank
+            max_fuel_quantity      20718.0 lbs
+            current_fuel_quantity  20718.0 lbs
+            max_flow_rate          10000.00 lbs/sec
+            max_fill_rate          10000.00 lbs/sec
+            max_xfer_rate          10000.00 lbs/sec
+         end_fuel_tank
+         
+         engine Engine LTE_FIGHTER_Eng_PM6
+            fuel_feed	MainFuelTank
+         end_engine
+
+      end_propulsion_data
+
+   end_point_mass_vehicle_type
+
+end_six_dof_object_types
