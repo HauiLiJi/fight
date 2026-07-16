@@ -1,0 +1,10 @@
+{
+  "hypothesis": "Use this file only as the reviewed output format for an LLM proposal.",
+  "evidence_episode_ids": [],
+  "parameter_changes": {
+    "medium_fire_range_m": 51000,
+    "medium_launch_cooldown_s": 24
+  },
+  "expected_benefit": "Earlier, but still bounded, medium-range engagement opportunities.",
+  "risk": "More medium-range missiles may be expended before the final merge."
+}

@@ -1,0 +1,6 @@
+{
+  "api_version": "1.0",
+  "topology": "team",
+  "entrypoint": "a2a_rule_ljh.py",
+  "step_timeout_s": 5.0
+}

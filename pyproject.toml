@@ -5,9 +5,12 @@ description = "Python command and observation interface for an AFSIM air-combat 
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
+    "fastapi>=0.115.0,<1.0.0",
     "grpcio>=1.80.0,<1.82.0",
     "pydantic>=2.8.0,<3.0.0",
     "protobuf==3.20.0",
+    "uvicorn>=0.30.0,<1.0.0",
+    "websockets>=13.0,<16.0",
 ]
 
 [project.scripts]
@@ -19,6 +22,7 @@ include = ["air_combat_challenge*"]
 
 [tool.setuptools.package-data]
 "air_combat_challenge.protocol" = ["*.proto"]
+"air_combat_challenge.web" = ["static/*"]
 
 [tool.ruff.lint.per-file-ignores]
 "src/air_combat_challenge/protocol/afsim_pb2.py" = ["E402"]
@@ -29,5 +33,6 @@ build-backend = "setuptools.build_meta"
 
 [dependency-groups]
 dev = [
+    "httpx>=0.27.0,<1.0.0",
     "ruff>=0.12.0,<1.0.0",
 ]

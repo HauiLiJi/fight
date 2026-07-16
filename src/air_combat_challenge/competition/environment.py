@@ -84,6 +84,7 @@ class CompetitionEnv:
             controlled_platform_ids=controlled_platform_ids,
             episode_id=self.episode_id,
             step_index=self.step_index,
+            events=self.observations[side].events,
             mission=self._mission(),
             global_view=self.global_view,
         )

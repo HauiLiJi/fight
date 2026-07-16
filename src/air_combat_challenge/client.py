@@ -69,6 +69,10 @@ class EnvClient(object):
         if self.reset_settle_time > 0:
             time.sleep(self.reset_settle_time)
 
+    def stop(self):
+        """Stop the currently active AFSIM simulation without closing Warlock."""
+        return self.server.stop(empty, timeout=self.rpc_timeout)
+
     def restart(self):
         self.reset()
         deadline = time.monotonic() + self.restart_timeout

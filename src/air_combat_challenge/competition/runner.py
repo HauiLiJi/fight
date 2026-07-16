@@ -30,6 +30,11 @@ class CompetitionRunner:
         step_delay_s=0.0,
         max_consecutive_violations=3,
         max_total_violations=10,
+        time_scale=None,
+        should_stop=None,
+        on_episode_start=None,
+        on_step=None,
+        on_episode_complete=None,
     ):
         self.env = env
         self.loaded_agents = {"blue": blue_agent, "red": red_agent}
@@ -39,6 +44,11 @@ class CompetitionRunner:
         self.step_delay_s = step_delay_s
         self.max_consecutive_violations = max_consecutive_violations
         self.max_total_violations = max_total_violations
+        self.time_scale = time_scale
+        self.should_stop = should_stop
+        self.on_episode_start = on_episode_start
+        self.on_step = on_step
+        self.on_episode_complete = on_episode_complete
 
     def run_episode(self, seed=None):
         episode_start = self.env.reset(seed=seed)
@@ -58,6 +68,7 @@ class CompetitionRunner:
                 "scenario_hash": self._scenario_hash(),
             },
         )
+        self._notify(self.on_episode_start, episode_start)
 
         initial_outcome = self.env.scorer.evaluate(self.env.sim_data, 0)
         if initial_outcome.terminated or initial_outcome.truncated:
@@ -72,6 +83,7 @@ class CompetitionRunner:
             )
             replay.write("summary", summary)
             replay.write_summary(summary)
+            self._notify(self.on_episode_complete, summary)
             return summary
 
         controllers = self._create_controllers(episode_start, seed)
@@ -79,8 +91,15 @@ class CompetitionRunner:
         final_winner = None
         final_reason = None
         executed_steps = 0
+        stopped_by_user = False
         try:
             for _ in range(self.max_steps):
+                step_started_at = time.monotonic()
+                if self._stop_requested():
+                    stopped_by_user = True
+                    final_winner = "draw"
+                    final_reason = "stopped_by_user"
+                    break
                 command_dict = {"blue": [], "red": []}
                 combined = {
                     "blue": GatewayResult(commands=[], reports=[]),
@@ -141,7 +160,15 @@ class CompetitionRunner:
 
                 for side in ("blue", "red"):
                     command_dict[side].extend(combined[side].commands)
-                step_result = self.env.step_validated(command_dict, combined)
+                try:
+                    step_result = self.env.step_validated(command_dict, combined)
+                except Exception:
+                    if not self._stop_requested():
+                        raise
+                    stopped_by_user = True
+                    final_winner = "draw"
+                    final_reason = "stopped_by_user"
+                    break
                 executed_steps += 1
                 replay.write(
                     "step",
@@ -151,15 +178,25 @@ class CompetitionRunner:
                         "result": step_result.model_dump(mode="json"),
                     },
                 )
+                self._notify(self.on_step, step_result)
                 if step_result.terminated or step_result.truncated:
                     final_winner = step_result.winner
                     final_reason = step_result.reason
                     break
-                if self.step_delay_s > 0:
-                    time.sleep(self.step_delay_s)
+                if self._wait_for_next_step(step_started_at):
+                    stopped_by_user = True
+                    final_winner = "draw"
+                    final_reason = "stopped_by_user"
+                    break
         finally:
             for controller in controllers:
                 controller.handle.close()
+
+        if stopped_by_user:
+            replay.write(
+                "stopped",
+                {"step_index": executed_steps, "reason": final_reason},
+            )
 
         summary = self._make_summary(
             episode_start.episode_id,
@@ -172,7 +209,30 @@ class CompetitionRunner:
         )
         replay.write("summary", summary)
         replay.write_summary(summary)
+        self._notify(self.on_episode_complete, summary)
         return summary
+
+    @staticmethod
+    def _notify(callback, payload):
+        if callback is not None:
+            callback(payload)
+
+    def _stop_requested(self):
+        return self.should_stop is not None and self.should_stop()
+
+    def _wait_for_next_step(self, step_started_at):
+        if self.time_scale is None:
+            pause_s = self.step_delay_s
+        else:
+            pause_s = max(0.0, (1.0 / self.time_scale) - (time.monotonic() - step_started_at))
+        deadline = time.monotonic() + pause_s
+        while True:
+            if self._stop_requested():
+                return True
+            remaining_s = deadline - time.monotonic()
+            if remaining_s <= 0:
+                return False
+            time.sleep(min(remaining_s, 0.05))
 
     def _make_summary(
         self,
@@ -196,6 +256,7 @@ class CompetitionRunner:
                 side: loaded.source_hash for side, loaded in self.loaded_agents.items()
             },
             "scenario_hash": self._scenario_hash(),
+            "time_scale": self.time_scale,
             "replay_path": str(replay.replay_path),
         }
 

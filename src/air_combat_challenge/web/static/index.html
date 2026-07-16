@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>空战仿真控制台</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.127.0/Build/Cesium/Widgets/widgets.css">
+    <link rel="stylesheet" href="/app.css?v=tactical-console-1">
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="control-panel">
+        <header class="brand">
+          <span class="eyebrow">AFSIM LOCAL CONSOLE</span>
+          <h1>空域对抗<br><em>控制台</em></h1>
+          <p>设定编队，接入仿真，观察每一个决策时刻。</p>
+        </header>
+
+        <form id="run-form" class="run-form">
+          <section>
+            <div class="section-title"><span>01</span> 编队部署</div>
+            <div class="split-fields">
+              <label>蓝方飞机<input name="blue_count" type="number" min="1" max="8" value="2"></label>
+              <label>红方飞机<input name="red_count" type="number" min="1" max="8" value="2"></label>
+            </div>
+            <div class="deployment-label blue-text">蓝方起始坐标</div>
+            <div class="split-fields">
+              <label>纬度（°）<input name="blue_start_latitude" type="number" min="-90" max="90" step="0.01" value="0"></label>
+              <label>经度（°）<input name="blue_start_longitude" type="number" min="-180" max="180" step="0.01" value="1"></label>
+            </div>
+            <label>蓝方队内横向间隔（km）<input name="blue_formation_spacing_km" type="number" min="0.1" max="200" step="0.1" value="10"></label>
+            <div class="deployment-label red-text">红方起始坐标</div>
+            <div class="split-fields">
+              <label>纬度（°）<input name="red_start_latitude" type="number" min="-90" max="90" step="0.01" value="0"></label>
+              <label>经度（°）<input name="red_start_longitude" type="number" min="-180" max="180" step="0.01" value="-1"></label>
+            </div>
+            <label>红方队内横向间隔（km）<input name="red_formation_spacing_km" type="number" min="0.1" max="200" step="0.1" value="10"></label>
+            <div class="split-fields">
+              <label>起始高度（m）<input name="altitude_m" type="number" min="1000" max="20000" step="100" value="8000"></label>
+              <label>起始速度（m/s）<input name="speed_mps" type="number" min="50" max="700" step="10" value="300"></label>
+            </div>
+          </section>
+
+          <section>
+            <div class="section-title"><span>02</span> 对抗规则</div>
+            <label>蓝方 Agent manifest<div class="file-picker"><input id="blue-agent" name="blue_agent" value="examples/rules/a2a_rule_agent.json" readonly><button type="button" data-picker="agent" data-target="blue-agent">浏览</button></div></label>
+            <label>红方 Agent manifest<div class="file-picker"><input id="red-agent" name="red_agent" value="examples/rules/a2a_rule_agent.json" readonly><button type="button" data-picker="agent" data-target="red-agent">浏览</button></div></label>
+            <div class="split-fields">
+              <label>随机种子<input name="seed" type="number" value="1"></label>
+              <label>最大步数<input name="max_steps" type="number" min="1" max="10000" value="600"></label>
+            </div>
+            <label>时间倍率<select name="time_scale"><option value="0.2">0.2x</option><option value="0.5">0.5x</option><option value="1" selected>1x（每秒）</option><option value="2">2x</option><option value="3">3x</option></select></label>
+          </section>
+
+          <section>
+            <div class="section-title"><span>03</span> AFSIM 连接</div>
+            <label>AFSIM 场景入口<div class="file-picker"><input id="afsim-scenario" name="afsim_scenario" value="scenarios/air_to_air/start_up.txt" readonly><button type="button" data-picker="scenario" data-target="afsim-scenario">浏览</button></div></label>
+            <div class="split-fields">
+              <label>IP<input name="afsim_ip" value="127.0.0.1"></label>
+              <label>端口<input name="afsim_port" type="number" min="1" max="65535" value="19920"></label>
+            </div>
+            <label class="switch-row"><input name="global_view" type="checkbox" checked><span class="switch"></span> 全局态势视图（调试）</label>
+            <label class="switch-row"><input name="auto_start_afsim" type="checkbox" checked><span class="switch"></span> 未启动时自动加载场景</label>
+            <button class="secondary" type="button" id="check-afsim">检查 AFSIM</button>
+          </section>
+
+          <div class="run-actions"><button class="launch" type="submit"><span>启动仿真</span><b>→</b></button><button class="stop" type="button" id="stop-run" disabled>结束仿真</button></div>
+        </form>
+        <div class="connection-line"><i id="connection-dot"></i><span id="connection-label">控制台连接中</span></div>
+      </aside>
+
+      <section class="operations">
+        <header class="topbar">
+          <div class="topbar-status"><div><span class="eyebrow">LIVE OPERATIONS</span><strong id="run-state">等待任务</strong></div><div class="timebox"><span>仿真时间</span><b id="sim-time">--:--</b><small id="step-index">STEP --</small></div></div>
+          <img class="console-logo" src="/baiyang-logo.png?v=1" alt="白杨标志">
+        </header>
+
+        <section class="battlefield-card">
+          <div class="card-head"><div><span class="eyebrow">TACTICAL PLOT</span><h2>实时态势</h2></div><div class="legend"><span class="blue-key">蓝方</span><span class="red-key">红方</span></div></div>
+          <div id="battlefield" class="battlefield">
+            <div id="live-globe" class="live-globe" aria-label="三维实时空战态势图"></div>
+            <div class="axis-label axis-west">3D</div><div class="axis-label axis-east">NORTH UP</div>
+            <div class="map-empty" id="map-empty">启动仿真后将在此显示编队位置与轨迹</div>
+          </div>
+          <div class="map-foot"><span>三维地球态势图：拖动旋转，滚轮缩放；高度按仿真遥测数据渲染</span><span id="formation-readout">--</span></div>
+          <p class="warlock-hint">三维观察：请直接查看正在运行的 Warlock 窗口，它使用 AFSIM 的真实模型、传感器和武器渲染。</p>
+        </section>
+
+        <section class="telemetry-grid">
+          <article class="telemetry-card"><span class="eyebrow">BLUE STATUS</span><strong id="blue-alive">0</strong><p>在场平台</p></article>
+          <article class="telemetry-card red-card"><span class="eyebrow">RED STATUS</span><strong id="red-alive">0</strong><p>在场平台</p></article>
+          <article class="telemetry-card event-card"><span class="eyebrow">LATEST EVENT</span><strong id="event-title">等待数据</strong><p id="event-detail">事件会在仿真推进后显示</p></article>
+        </section>
+
+        <section class="detail-layout">
+          <article class="data-panel">
+            <div class="card-head"><div><span class="eyebrow">PLATFORM TELEMETRY</span><h2>飞机参数</h2></div></div>
+            <div class="table-wrap"><table><thead><tr><th>平台</th><th>位置</th><th>高度</th><th>速度</th><th>航向</th><th>中距弹</th><th>近距弹</th><th>空地弹</th></tr></thead><tbody id="telemetry-body"><tr class="placeholder"><td colspan="8">暂无实时遥测数据</td></tr></tbody></table></div>
+          </article>
+          <article class="result-panel" id="result-panel">
+            <span class="eyebrow">MISSION RESULT</span><h2 id="result-title">尚未开始</h2><p id="result-copy">完成一局仿真后，胜负、终局原因和回放位置会显示在这里。</p>
+            <div class="result-meta"><span>违规</span><b id="violation-count">--</b></div>
+            <div class="result-meta"><span>执行步数</span><b id="result-steps">--</b></div>
+            <button type="button" class="result-analysis-button" id="request-analysis">生成本局大模型分析</button>
+          </article>
+        </section>
+
+        <section class="replay-panel analysis-panel" id="analysis-panel">
+          <div class="card-head"><div><span class="eyebrow">LLM POST-MISSION REVIEW</span><h2>大模型复盘</h2></div><span id="analysis-model"></span></div>
+          <div class="analysis-state" id="analysis-state">等待本局仿真完成，届时将自动发送回放数据并生成分析。</div>
+          <article class="analysis-content" id="analysis-content" hidden></article>
+        </section>
+
+        <section class="replay-panel" id="replay-panel">
+          <div class="card-head"><div><span class="eyebrow">POST-MISSION REPLAY</span><h2>轨迹与参数复盘</h2></div><span id="replay-status">完成一局后加载本地回放</span></div>
+          <div class="replay-controls">
+            <label>战机<select id="trajectory-unit" disabled><option>等待回放</option></select></label>
+            <label>回放倍率<select id="replay-speed"><option value="0.2">0.2x</option><option value="0.5">0.5x</option><option value="1" selected>1x</option><option value="2">2x</option><option value="3">3x</option></select></label>
+            <div class="replay-buttons"><button type="button" id="replay-play">播放</button><button type="button" id="replay-reset">重置</button></div>
+          </div>
+          <div class="replay-canvases">
+            <article><span class="eyebrow">3D FLIGHT REPLAY</span><div id="trajectory-globe"></div><p>可用鼠标拖拽、缩放和旋转地球；播放时显示每架战机的实时位置与已飞行轨迹。</p></article>
+            <article><span class="eyebrow">SELECTED UNIT TELEMETRY</span><div class="telemetry-charts"><canvas id="telemetry-altitude" data-telemetry-chart width="360" height="180"></canvas><canvas id="telemetry-speed" data-telemetry-chart width="360" height="180"></canvas><canvas id="telemetry-pitch" data-telemetry-chart width="360" height="180"></canvas><canvas id="telemetry-roll" data-telemetry-chart width="360" height="180"></canvas><canvas id="telemetry-heading" data-telemetry-chart width="360" height="180"></canvas><canvas id="telemetry-acceleration" data-telemetry-chart width="360" height="180"></canvas></div><div class="chart-tooltip" id="chart-tooltip" hidden></div><div class="telemetry-details" id="telemetry-details"><span>选择战机后显示完整参数</span></div><p>每张图独立展示一个参数；红色竖线表示开火指令时刻。</p></article>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cesium@1.127.0/Build/Cesium/Cesium.js"></script>
+    <script src="/app.js?v=llm-review-3"></script>
+  </body>
+</html>

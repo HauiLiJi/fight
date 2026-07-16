@@ -1,0 +1,696 @@
+{
+  "role": "You are an offline air-combat experiment analyst. Do not propose Python code.",
+  "question": "What cases ended in a draw after no fire?",
+  "evidence": [
+    {
+      "score": 0.043,
+      "episode_id": "01e21f97-d22e-4e34-b761-bd16dd91a6f1",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=stopped_by_user seed=1 steps=18 initial_units={'blue': 4, 'red': 2} final_units={'blue': 4, 'red': 2} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=None candidate_fires=0 candidate_rejections=0 tags=stopped_by_user",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 48.0,
+        "episode_id": "01e21f97-d22e-4e34-b761-bd16dd91a6f1",
+        "event_types": {
+          "SensorTurnedOn": 6
+        },
+        "executed_steps": 18,
+        "final_units": {
+          "blue": 4,
+          "red": 2
+        },
+        "fire_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": null,
+          "red": null
+        },
+        "initial_units": {
+          "blue": 4,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "stopped_by_user",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "608d076af2d5bde62f24e86e3593f3e6c71b5bfbe40b9e11bc274ef644e6055a",
+        "seed": 1,
+        "tags": [
+          "stopped_by_user"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.043,
+      "episode_id": "2f99b91f-a7f6-4183-8fa0-b0c20c087f26",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=stopped_by_user seed=1 steps=241 initial_units={'blue': 4, 'red': 2} final_units={'blue': 4, 'red': 2} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=None candidate_fires=0 candidate_rejections=0 tags=stopped_by_user",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 271.0,
+        "episode_id": "2f99b91f-a7f6-4183-8fa0-b0c20c087f26",
+        "event_types": {
+          "SensorTurnedOn": 6
+        },
+        "executed_steps": 241,
+        "final_units": {
+          "blue": 4,
+          "red": 2
+        },
+        "fire_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": null,
+          "red": null
+        },
+        "initial_units": {
+          "blue": 4,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "stopped_by_user",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "608d076af2d5bde62f24e86e3593f3e6c71b5bfbe40b9e11bc274ef644e6055a",
+        "seed": 1,
+        "tags": [
+          "stopped_by_user"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.0404,
+      "episode_id": "265e5a7a-bda7-4d54-94e2-48258ec5fd2e",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=stopped_by_user seed=1 steps=23 initial_units={'blue': 2, 'red': 2} final_units={'blue': 2, 'red': 2} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=None candidate_fires=0 candidate_rejections=0 tags=stopped_by_user",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 53.0,
+        "episode_id": "265e5a7a-bda7-4d54-94e2-48258ec5fd2e",
+        "event_types": {
+          "SensorTurnedOn": 4
+        },
+        "executed_steps": 23,
+        "final_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "fire_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": null,
+          "red": null
+        },
+        "initial_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "stopped_by_user",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "0d36b8e7a5bdfda9515e4665498ea2b060db6c98a0b425b6928294acef73c632",
+        "seed": 1,
+        "tags": [
+          "stopped_by_user"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.0404,
+      "episode_id": "84f7c0c3-7a33-460d-8b4c-5d74c5f33297",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=stopped_by_user seed=1 steps=14 initial_units={'blue': 2, 'red': 2} final_units={'blue': 2, 'red': 2} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=None candidate_fires=0 candidate_rejections=0 tags=stopped_by_user",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 44.0,
+        "episode_id": "84f7c0c3-7a33-460d-8b4c-5d74c5f33297",
+        "event_types": {
+          "SensorTurnedOn": 4
+        },
+        "executed_steps": 14,
+        "final_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "fire_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": null,
+          "red": null
+        },
+        "initial_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "stopped_by_user",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "0d5a243aeaa36c757bc83db8e3843920c9901524b32f15fa5d13d5026e3af970",
+        "seed": 1,
+        "tags": [
+          "stopped_by_user"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.0404,
+      "episode_id": "b7855349-4c50-4e66-a33a-332b67182eae",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=stopped_by_user seed=1 steps=13 initial_units={'blue': 2, 'red': 2} final_units={'blue': 2, 'red': 2} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=None candidate_fires=0 candidate_rejections=0 tags=stopped_by_user",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 43.0,
+        "episode_id": "b7855349-4c50-4e66-a33a-332b67182eae",
+        "event_types": {
+          "SensorTurnedOn": 4
+        },
+        "executed_steps": 13,
+        "final_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "fire_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": null,
+          "red": null
+        },
+        "initial_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "stopped_by_user",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "9220e7fd1c18a40951c94ea51af06a39585b7f82b1373e08dbcbec59f0451b32",
+        "seed": 1,
+        "tags": [
+          "stopped_by_user"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.0404,
+      "episode_id": "d32908be-d9a4-4bd6-8001-337d1be4f72a",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=stopped_by_user seed=1 steps=36 initial_units={'blue': 2, 'red': 2} final_units={'blue': 2, 'red': 2} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=None candidate_fires=0 candidate_rejections=0 tags=stopped_by_user",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 66.0,
+        "episode_id": "d32908be-d9a4-4bd6-8001-337d1be4f72a",
+        "event_types": {
+          "SensorTurnedOn": 4
+        },
+        "executed_steps": 36,
+        "final_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "fire_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": null,
+          "red": null
+        },
+        "initial_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "stopped_by_user",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "906e2444215c9c56c8be98f05f9d756420257a483f5900985a778b3ab47c6626",
+        "seed": 1,
+        "tags": [
+          "stopped_by_user"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.039,
+      "episode_id": "20d3e829-6017-4f6d-ab4b-86625122a6a7",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=simultaneous_elimination seed=1 steps=383 initial_units={'blue': 2, 'red': 2} final_units={'blue': 0, 'red': 0} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=387.0 candidate_fires=0 candidate_rejections=0 tags=simultaneous_elimination",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 413.0,
+        "episode_id": "20d3e829-6017-4f6d-ab4b-86625122a6a7",
+        "event_types": {
+          "PlatformBroken": 8,
+          "SensorTurnedOn": 8,
+          "WeaponFired": 4,
+          "WeaponHit": 4
+        },
+        "executed_steps": 383,
+        "final_units": {
+          "blue": 0,
+          "red": 0
+        },
+        "fire_actions": {
+          "blue": 2,
+          "red": 2
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": 387.0,
+          "red": 387.0
+        },
+        "initial_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "simultaneous_elimination",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "1df0379e1a68266d3588ae5080b57e1685c3856836886060730a68c41a835370",
+        "seed": 1,
+        "tags": [
+          "simultaneous_elimination"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.039,
+      "episode_id": "47e4a0e7-e3a4-4351-af5f-361f2508a125",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=simultaneous_elimination seed=1 steps=362 initial_units={'blue': 2, 'red': 2} final_units={'blue': 0, 'red': 0} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=366.0 candidate_fires=0 candidate_rejections=0 tags=simultaneous_elimination",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 392.0,
+        "episode_id": "47e4a0e7-e3a4-4351-af5f-361f2508a125",
+        "event_types": {
+          "PlatformBroken": 8,
+          "SensorTurnedOn": 8,
+          "WeaponFired": 4,
+          "WeaponHit": 4
+        },
+        "executed_steps": 362,
+        "final_units": {
+          "blue": 0,
+          "red": 0
+        },
+        "fire_actions": {
+          "blue": 2,
+          "red": 2
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": 366.0,
+          "red": 366.0
+        },
+        "initial_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "simultaneous_elimination",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "2e7d46bc38a49df2f74354f74e0f3eaefb36afc5469b09286813187100a325e6",
+        "seed": 1,
+        "tags": [
+          "simultaneous_elimination"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.039,
+      "episode_id": "7c09c715-4e3d-494e-8e19-acf8222ffde0",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=simultaneous_elimination seed=1 steps=362 initial_units={'blue': 2, 'red': 2} final_units={'blue': 0, 'red': 0} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=366.0 candidate_fires=0 candidate_rejections=0 tags=simultaneous_elimination",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 392.0,
+        "episode_id": "7c09c715-4e3d-494e-8e19-acf8222ffde0",
+        "event_types": {
+          "PlatformBroken": 8,
+          "SensorTurnedOn": 8,
+          "WeaponFired": 4,
+          "WeaponHit": 4
+        },
+        "executed_steps": 362,
+        "final_units": {
+          "blue": 0,
+          "red": 0
+        },
+        "fire_actions": {
+          "blue": 2,
+          "red": 2
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": 366.0,
+          "red": 366.0
+        },
+        "initial_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "simultaneous_elimination",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "2e7d46bc38a49df2f74354f74e0f3eaefb36afc5469b09286813187100a325e6",
+        "seed": 1,
+        "tags": [
+          "simultaneous_elimination"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.039,
+      "episode_id": "8e11c4a3-751e-4892-b8f3-bfa809a2325a",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=simultaneous_elimination seed=1 steps=351 initial_units={'blue': 2, 'red': 2} final_units={'blue': 0, 'red': 0} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=355.0 candidate_fires=0 candidate_rejections=0 tags=simultaneous_elimination",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 381.0,
+        "episode_id": "8e11c4a3-751e-4892-b8f3-bfa809a2325a",
+        "event_types": {
+          "PlatformBroken": 8,
+          "SensorTurnedOn": 8,
+          "WeaponFired": 4,
+          "WeaponHit": 4
+        },
+        "executed_steps": 351,
+        "final_units": {
+          "blue": 0,
+          "red": 0
+        },
+        "fire_actions": {
+          "blue": 2,
+          "red": 2
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": 355.0,
+          "red": 355.0
+        },
+        "initial_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "simultaneous_elimination",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "114d506dbf3b71acf76de24b77b84d07101a81b8fc85b489a7d510e7b84c71c9",
+        "seed": 1,
+        "tags": [
+          "simultaneous_elimination"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.039,
+      "episode_id": "b1241d53-7903-49bf-9e35-bac0f5483a6b",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=simultaneous_elimination seed=1 steps=351 initial_units={'blue': 5, 'red': 5} final_units={'blue': 0, 'red': 0} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=355.0 candidate_fires=0 candidate_rejections=0 tags=simultaneous_elimination",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 381.0,
+        "episode_id": "b1241d53-7903-49bf-9e35-bac0f5483a6b",
+        "event_types": {
+          "PlatformBroken": 20,
+          "SensorTurnedOn": 20,
+          "WeaponFired": 10,
+          "WeaponHit": 10
+        },
+        "executed_steps": 351,
+        "final_units": {
+          "blue": 0,
+          "red": 0
+        },
+        "fire_actions": {
+          "blue": 5,
+          "red": 5
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": 355.0,
+          "red": 355.0
+        },
+        "initial_units": {
+          "blue": 5,
+          "red": 5
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "simultaneous_elimination",
+        "rejected_actions": {
+          "blue": 0,
+          "red": 0
+        },
+        "scenario_hash": "5a4d71b04920c1518c6ca9df36ac43ac075e5ea55c51f25c7d0387ed4c43f0cb",
+        "seed": 1,
+        "tags": [
+          "simultaneous_elimination"
+        ],
+        "winner": "draw"
+      }
+    },
+    {
+      "score": 0.0387,
+      "episode_id": "ffde0193-06fa-489f-8648-04ab3c85f7ac",
+      "text": "candidate=unknown opponent=unknown candidate_side=unknown outcome=draw reason=stopped_by_user seed=1 steps=32 initial_units={'blue': 2, 'red': 2} final_units={'blue': 2, 'red': 2} candidate_first_detection=None candidate_first_fire=None opponent_first_fire=31.0 candidate_fires=0 candidate_rejections=0 tags=action_rejections stopped_by_user",
+      "metadata": {
+        "agent_hashes": {
+          "blue": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f",
+          "red": "04c926b9dc1dd19c1deba4ea80bd7751e814456df15a4ae2acaa3b7baf6e6f8f"
+        },
+        "candidate_name": null,
+        "candidate_outcome": null,
+        "candidate_side": null,
+        "duration_s": 62.0,
+        "episode_id": "ffde0193-06fa-489f-8648-04ab3c85f7ac",
+        "event_types": {
+          "SensorTurnedOn": 4,
+          "WeaponFired": 4
+        },
+        "executed_steps": 32,
+        "final_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "fire_actions": {
+          "blue": 4,
+          "red": 4
+        },
+        "first_detection_s": {
+          "blue": 30.0,
+          "red": 30.0
+        },
+        "first_fire_s": {
+          "blue": 31.0,
+          "red": 31.0
+        },
+        "initial_units": {
+          "blue": 2,
+          "red": 2
+        },
+        "manifest_paths": {},
+        "opponent_name": null,
+        "reason": "stopped_by_user",
+        "rejected_actions": {
+          "blue": 2,
+          "red": 2
+        },
+        "scenario_hash": "49fa96b5f92b0a61d41e095076f128f492019e8ad09e7e792ffd9e932aab94d2",
+        "seed": 1,
+        "tags": [
+          "action_rejections",
+          "stopped_by_user"
+        ],
+        "winner": "draw"
+      }
+    }
+  ],
+  "allowed_parameter_ranges": {
+    "medium_fire_range_m": [
+      30000,
+      60000
+    ],
+    "medium_min_range_m": [
+      10000,
+      30000
+    ],
+    "short_fire_range_m": [
+      5000,
+      20000
+    ],
+    "medium_launch_cooldown_s": [
+      8,
+      60
+    ],
+    "short_launch_cooldown_s": [
+      4,
+      30
+    ],
+    "target_memory_s": [
+      0,
+      120
+    ]
+  },
+  "required_response_schema": {
+    "hypothesis": "string",
+    "evidence_episode_ids": [
+      "episode id"
+    ],
+    "parameter_changes": {
+      "medium_fire_range_m": 50000
+    },
+    "expected_benefit": "string",
+    "risk": "string"
+  }
+}

@@ -112,6 +112,55 @@ uv run air-combat check-afsim
 只有输出包含 `"ready": true`、`"state": "active"` 和 `"state_code": 4`
 时再启动规则或比赛。
 
+## 本地控制台
+
+控制台提供浏览器中的场景配置、实时态势、飞机遥测和终局结果展示。它复用相同的
+比赛校验、Agent 隔离和 JSONL 回放机制；AFSIM 仍需要按上文先启动并保持运行。
+
+```powershell
+uv sync
+uv run air-combat serve
+```
+
+### 大模型赛后复盘
+
+网页控制台会在每局结束后自动将该局的终局摘要、平台遥测摘要、事件、开火动作和锁定记录发送到配置的大模型，并显示中文复盘。系统提示词固定在 `src/air_combat_challenge/web/app.py` 的 `LLM_SYSTEM_PROMPT`，强调只根据回放数据作出可追溯判断。
+
+在 `src/air_combat_challenge/web/app.py` 顶部填写 `LLM_API_KEY`，也可以在同处修改 `LLM_MODEL` 和 `LLM_API_BASE`。密钥只保留在服务端源码中，不会发送给浏览器；不要将含有真实密钥的文件提交到远程仓库。
+
+```python
+LLM_API_KEY = "你的密钥"
+LLM_MODEL = "gpt-4.1-mini"
+LLM_API_BASE = "https://api.openai.com/v1"
+```
+
+然后访问 `http://127.0.0.1:8787`。页面可以分别设置红蓝方的飞机数量、起始经纬度、
+队内横向间隔（km）、初始高度和速度、Agent manifest、随机种子、步数、时间倍率及 AFSIM 地址。
+“AFSIM 场景入口”、蓝方 Agent manifest 和红方 Agent manifest 通过“浏览”调起本机文件选择框；
+场景需选择 `start_up.txt`，Agent 需选择 manifest JSON。默认场景为
+`scenarios/air_to_air/start_up.txt`。当 `19920` 没有 AFSIM 服务且启用“未启动时自动加载场景”时，
+控制台会使用 `mission.exe -es <start_up.txt>` 自动启动并加载所选场景；可通过 `AFSIM_HOME`
+环境变量指定 AFSIM 安装目录。选择的路径可以位于项目外；Agent 的同目录会作为其源代码根目录。
+已有外部 AFSIM 服务时，控制台会复用它，不会覆盖用户已打开的 Warlock 场景。
+
+点击“检查 AFSIM”确认服务就绪后，再点击“启动仿真”；“结束仿真”会同时调用 AFSIM gRPC
+的 `stop` 接口结束当前场景，并写入 `stopped_by_user` 回放记录。Warlock 窗口会保留，
+但仿真不再推进。Web 控制台生成的场景配置保存在
+`runs/web_scenarios/`，比赛回放和汇总仍保存在 `runs/`。
+
+时间倍率支持 `0.2x`、`0.5x`、`1x`、`2x` 和 `3x`。AFSIM 场景不再使用 `realtime` 模式，
+因此首次使用该版本或修改该文件后，需要在 Warlock 中重新加载 `start_up.txt` 并点击 `Run`。
+网页中的态势图用于指挥与遥测；三维模型、导弹和传感器渲染请直接使用 Warlock 窗口查看。
+
+每局会在 `runs/<episode_id>.jsonl` 保存逐步回放，在
+`runs/<episode_id>.summary.json` 保存终局汇总。逐步回放包括：双方完整观测（每架战机的
+经纬高、北东天速度、航向/俯仰/滚转、传感器状态、武器余量）、可见航迹、事件、Agent
+提交动作、翻译后的 AFSIM 命令、动作执行回执、随机种子、场景哈希和 Agent 源码哈希。
+对局结束后，网页会自动从 JSONL 加载全机三维轨迹，以及选定战机的高度和速度时间曲线。
+实时态势图使用卫星影像瓦片；复盘使用可鼠标拖拽、缩放的 Cesium 三维地球，并支持按 `1x`、
+`5x` 或 `20x` 播放战机轨迹动画。卫星影像与三维地球库通过公网 CDN 加载；离线时实时图会
+回退到本地平面态势，三维复盘会提示网络不可用。
+
 ## 运行比赛
 
 AFSIM 就绪后运行：

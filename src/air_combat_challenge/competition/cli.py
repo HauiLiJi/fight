@@ -25,6 +25,10 @@ def _build_parser():
     check_parser.add_argument("--port", default="19920")
     check_parser.add_argument("--timeout", type=float, default=5.0)
 
+    serve_parser = subparsers.add_parser("serve", help="Start the local simulation control console")
+    serve_parser.add_argument("--host", default="127.0.0.1")
+    serve_parser.add_argument("--port", type=int, default=8787)
+
     run_parser = subparsers.add_parser("run", help="Run a competition episode")
     run_parser.add_argument("--blue-agent", required=True)
     run_parser.add_argument("--red-agent", required=True)
@@ -91,6 +95,13 @@ def main(argv=None, env_factory=None, runner_factory=CompetitionRunner, client_f
             )
         )
         return 0 if ready else 1
+
+    if args.command == "serve":
+        from ..web.app import create_app
+        import uvicorn
+
+        uvicorn.run(create_app(), host=args.host, port=args.port)
+        return 0
 
     if env_factory is None:
         from ..env import AFsimEnv

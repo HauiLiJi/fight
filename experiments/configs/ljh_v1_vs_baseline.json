@@ -1,0 +1,16 @@
+{
+  "candidate": {
+    "name": "ljh_v1",
+    "manifest": "examples/rules/a2a_rule_ljh_agent.json"
+  },
+  "opponents": [
+    {
+      "name": "baseline",
+      "manifest": "examples/rules/a2a_rule_agent.json"
+    }
+  ],
+  "scenario": "configs/scenarios/aircraft_2v2.json",
+  "seeds": [1, 2, 3, 4, 5],
+  "steps": 2000,
+  "global_view": false
+}
