@@ -429,6 +429,21 @@ def _read_replay_telemetry(episode_id: str):
                                         "sim_time": result.get("sim_time", 0.0),
                                     }
                                 )
+    events.sort(key=lambda event: (event.get("sim_time", 0.0), event.get("event_id", -1)))
+    fired_by_pair = {}
+    for event in events:
+        if event.get("event_type") == "WeaponFired":
+            fired_by_pair.setdefault(
+                (event.get("shooter"), event.get("target")),
+                [],
+            ).append(event.get("sim_time"))
+    for action in fire_actions:
+        fired_times = fired_by_pair.get((action.get("platform_id"), action.get("target_id")), [])
+        later_fires = [time for time in fired_times if time >= action["sim_time"] - 1.0]
+        if later_fires:
+            action["submitted_sim_time"] = action["sim_time"]
+            action["sim_time"] = later_fires[0]
+
     return {
         "episode_id": episode_id,
         "trajectories": list(trajectories.values()),
@@ -461,6 +476,82 @@ def _read_latest_episode_summary():
 
 def _round_number(value, digits=2):
     return round(value, digits) if isinstance(value, (int, float)) else None
+
+
+def _engagement_time_consistency(telemetry: dict):
+    """Build traceable launch-to-damage chains from the events AFSIM exposes."""
+    events = telemetry.get("events", [])
+    terminal_events = [
+        event
+        for event in events
+        if event.get("event_type") in {"WeaponHit", "WeaponMissed"}
+    ]
+    used_terminal_indexes = set()
+    chains = []
+    issues = []
+
+    for launch in (event for event in events if event.get("event_type") == "WeaponFired"):
+        launch_time = launch.get("sim_time")
+        if not isinstance(launch_time, (int, float)):
+            issues.append({"kind": "invalid_launch_time", "launch": launch})
+            continue
+        terminal_index = next(
+            (
+                index
+                for index, terminal in enumerate(terminal_events)
+                if index not in used_terminal_indexes
+                and terminal.get("shooter") == launch.get("shooter")
+                and terminal.get("target") == launch.get("target")
+                and terminal.get("sim_time", float("inf")) >= launch_time
+            ),
+            None,
+        )
+        terminal = terminal_events[terminal_index] if terminal_index is not None else None
+        if terminal_index is not None:
+            used_terminal_indexes.add(terminal_index)
+
+        damage_event = None
+        if terminal and terminal.get("event_type") == "WeaponHit":
+            damage_event = next(
+                (
+                    event
+                    for event in events
+                    if event.get("event_type") == "PlatformBroken"
+                    and event.get("platform") == launch.get("target")
+                    and event.get("sim_time", float("inf")) >= terminal.get("sim_time", 0.0)
+                ),
+                None,
+            )
+        chain = {
+            "shooter": launch.get("shooter"),
+            "target": launch.get("target"),
+            "weapon": launch.get("weapon"),
+            "launch_time": launch_time,
+            "terminal_event": terminal.get("event_type") if terminal else None,
+            "terminal_time": terminal.get("sim_time") if terminal else None,
+            "damage_time": damage_event.get("sim_time") if damage_event else None,
+        }
+        chains.append(chain)
+        if terminal and terminal.get("sim_time", launch_time) < launch_time:
+            issues.append({"kind": "terminal_before_launch", "chain": chain})
+        if (
+            damage_event
+            and damage_event.get("sim_time", terminal.get("sim_time", 0.0))
+            < terminal.get("sim_time", 0.0)
+        ):
+            issues.append({"kind": "damage_before_hit", "chain": chain})
+
+    launches = [event for event in events if event.get("event_type") == "WeaponFired"]
+    for terminal in terminal_events:
+        if not any(
+            launch.get("shooter") == terminal.get("shooter")
+            and launch.get("target") == terminal.get("target")
+            and launch.get("sim_time", float("inf")) <= terminal.get("sim_time", float("-inf"))
+            for launch in launches
+        ):
+            issues.append({"kind": "terminal_without_preceding_launch", "event": terminal})
+
+    return {"chain_count": len(chains), "issues": issues, "chains": chains}
 
 
 def _build_llm_brief(summary: dict, telemetry: dict):
@@ -508,6 +599,7 @@ def _build_llm_brief(summary: dict, telemetry: dict):
             "events": events,
             "fire_actions": telemetry.get("fire_actions", []),
             "locks": telemetry.get("locks", []),
+            "engagement_time_consistency": _engagement_time_consistency(telemetry),
         },
         "data_notes": "平台遥测已保留首末样本及高度/速度范围；事件、开火动作与锁定记录按回放原样提供。",
     }

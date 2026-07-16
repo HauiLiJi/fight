@@ -725,6 +725,11 @@ function buildGlobeReplay() {
   const start = Cesium.JulianDate.fromDate(new Date(0));
   const stop = Cesium.JulianDate.addSeconds(start, Math.max(1, lastTime - firstTime), new Cesium.JulianDate());
   const entities = [];
+  const destroyedAt = new Map(
+    (replayTelemetry.events || [])
+      .filter((event) => event.event_type === "PlatformBroken" && event.platform)
+      .map((event) => [event.platform, event.sim_time]),
+  );
   replayTelemetry.trajectories.forEach((trajectory) => {
     const color = trajectory.side === "blue" ? Cesium.Color.fromCssColorString("#38a0ff") : Cesium.Color.fromCssColorString("#ff6148");
     const property = new Cesium.SampledPositionProperty();
@@ -735,7 +740,12 @@ function buildGlobeReplay() {
       return position;
     });
     entities.push(globeViewer.entities.add({ polyline: { positions, width: 3, material: color.withAlpha(.72) } }));
+    const destroyedTime = destroyedAt.get(trajectory.platform_id);
+    const availabilityStop = destroyedTime == null
+      ? stop.clone()
+      : Cesium.JulianDate.addSeconds(start, Math.max(0, destroyedTime - firstTime), new Cesium.JulianDate());
     entities.push(globeViewer.entities.add({
+      availability: new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({ start: Cesium.JulianDate.addSeconds(start, Math.max(0, trajectory.samples[0].sim_time - firstTime), new Cesium.JulianDate()), stop: availabilityStop })]),
       position: property, point: { pixelSize: 9, color, outlineColor: Cesium.Color.WHITE, outlineWidth: 1 },
       label: { text: trajectory.platform_id, font: "12px sans-serif", fillColor: Cesium.Color.WHITE, outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(10, -10) },
       path: { resolution: 1, material: color, width: 4, trailTime: lastTime - firstTime, leadTime: 0 },
@@ -743,12 +753,18 @@ function buildGlobeReplay() {
   });
   const trajectoryByPlatform = new Map(replayTelemetry.trajectories.map((trajectory) => [trajectory.platform_id, trajectory]));
   const sampleAt = (trajectory, simTime) => trajectory?.samples.reduce((nearest, sample) => Math.abs(sample.sim_time - simTime) < Math.abs(nearest.sim_time - simTime) ? sample : nearest, trajectory.samples[0]);
+  const terminalEvents = (replayTelemetry.events || []).filter((event) => ["WeaponHit", "WeaponMissed"].includes(event.event_type));
+  const assignedTerminalEvents = new Set();
   (replayTelemetry.events || []).filter((event) => event.event_type === "WeaponFired").forEach((event) => {
     const shooter = trajectoryByPlatform.get(event.shooter);
     const target = trajectoryByPlatform.get(event.target);
     if (!shooter || !target) return;
     const launchTime = Math.max(firstTime, event.sim_time);
-    const impactTime = Math.min(lastTime, launchTime + 20);
+    const terminalIndex = terminalEvents.findIndex((candidate, index) => !assignedTerminalEvents.has(index)
+      && candidate.shooter === event.shooter && candidate.target === event.target && candidate.sim_time >= launchTime);
+    const terminalEvent = terminalIndex === -1 ? null : terminalEvents[terminalIndex];
+    if (terminalIndex !== -1) assignedTerminalEvents.add(terminalIndex);
+    const impactTime = terminalEvent ? Math.min(lastTime, terminalEvent.sim_time) : Math.min(lastTime, launchTime + 20);
     const launchSample = sampleAt(shooter, launchTime);
     const impactSample = sampleAt(target, impactTime);
     const missilePosition = new Cesium.SampledPositionProperty();
@@ -760,7 +776,7 @@ function buildGlobeReplay() {
       availability: new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({ start: launchDate, stop: impactDate })]),
       position: missilePosition,
       point: { pixelSize: 7, color: Cesium.Color.YELLOW, outlineColor: Cesium.Color.ORANGERED, outlineWidth: 2 },
-      path: { resolution: 1, material: Cesium.Color.YELLOW.withAlpha(.8), width: 2, trailTime: 20, leadTime: 0 },
+      path: { resolution: 1, material: Cesium.Color.YELLOW.withAlpha(.8), width: 2, trailTime: Math.max(1, impactTime - launchTime), leadTime: 0 },
     }));
   });
   globeViewer.clock.startTime = start.clone(); globeViewer.clock.stopTime = stop.clone(); globeViewer.clock.currentTime = start.clone();

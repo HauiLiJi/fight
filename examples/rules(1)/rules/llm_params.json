@@ -1,0 +1,22 @@
+{
+  "parameter_source": "expert_initialized",
+  "enabled": true,
+  "provider": "openai_compatible",
+  "base_url": "https://www.dmxapi.cn/v1/chat/completions",
+  "model": "deepseek-v4-flash",
+  "api_key": "sk-CSRObsA4jE8PIDOgMYSJA5KGr5CUdXg5CMWbNbvH9ul3M2Ie",
+  "request_timeout_s": 30.0,
+  "connect_timeout_s": 5.0,
+  "max_candidates": 4,
+  "min_valid_for_steps": 2,
+  "max_valid_for_steps": 8,
+  "max_response_chars": 12000,
+  "max_inflight_requests": 1,
+  "stale_after_steps": 120,
+  "llm_ready_max_age_steps": 120,
+  "retry_backoff_initial_steps": 10,
+  "retry_backoff_multiplier": 2.0,
+  "retry_backoff_max_steps": 60,
+  "temperature": 0.1,
+  "max_tokens": 800
+}

@@ -72,6 +72,7 @@ class EventV1(StrictModel):
     weapon: Optional[str] = None
     target: Optional[str] = None
     sensor: Optional[str] = None
+    event_time_kind: Optional[str] = None
 
 
 class ObservationV1(StrictModel):

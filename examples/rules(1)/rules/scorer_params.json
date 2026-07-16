@@ -1,0 +1,85 @@
+{
+  "parameter_source": "expert_initialized",
+  "prediction": {
+    "horizon_s": 12.0,
+    "dt_s": 1.0,
+    "max_turn_rate_deg_s": 12.0,
+    "max_climb_rate_mps": 80.0,
+    "max_descent_rate_mps": 100.0,
+    "max_acceleration_mps2": 35.0,
+    "min_planning_speed_mps": 120.0,
+    "max_planning_speed_mps": 650.0,
+    "mach_to_mps": 340.0
+  },
+  "enemy_response": {
+    "focus_mach": 0.9,
+    "split_mach": 0.88,
+    "bracket_heading_offset_deg": 35.0,
+    "support_heading_offset_deg": 25.0,
+    "bait_escape_mach": 0.95,
+    "counter_press_mach": 0.9,
+    "disengage_mach": 0.85
+  },
+  "normalization": {
+    "distance_scale_m": 70000.0,
+    "closure_scale_mps": 500.0,
+    "altitude_scale_m": 5000.0,
+    "formation_distance_scale_m": 50000.0,
+    "local_advantage_range_m": 50000.0,
+    "bracket_bearing_threshold_deg": 45.0
+  },
+  "fire_window": {
+    "range_m": 50000.0,
+    "near_range_m": 30000.0,
+    "closing_scale_mps": 300.0,
+    "alignment_min": 0.0,
+    "alignment_strong": 0.65,
+    "heading_error_max_deg": 28.0,
+    "coasting_multiplier": 0.35,
+    "enemy_assumed_ammo": true,
+    "time_to_fire_scale_s": 12.0,
+    "time_to_impact_scale_s": 35.0,
+    "hit_probability_scale": 0.65,
+    "high_pending_hit_probability": 0.55,
+    "threat_prediction_horizon_s": 30.0,
+    "predicted_launch_probability_threshold": 0.12,
+    "prelaunch_hit_probability_scale": 0.50,
+    "time_to_fire_discount": 24.0,
+    "pressed_threat_discount": 0.65
+  },
+  "utility_weights": {
+    "attack_opportunity": 0.14,
+    "own_fire_opportunity": 0.12,
+    "survivability": 0.14,
+    "terminal_survival": 0.15,
+    "exchange_value": 0.14,
+    "coordination": 0.10,
+    "counter_effect": 0.10,
+    "local_advantage": 0.08,
+    "bracket_risk": 0.06,
+    "unpressed_enemy_risk": 0.12,
+    "enemy_fire_window_risk": 0.13,
+    "separation_risk": 0.04,
+    "ammo_waste": 0.02,
+    "duplicate_attack_waste": 0.06
+  },
+  "aggregation": {
+    "expected_weight": 0.6,
+    "worst_case_weight": 0.3,
+    "switch_cost_weight": 0.1
+  },
+  "switch_cost": {
+    "mode_change": 0.25,
+    "tactic_change": 0.25,
+    "per_role_change": 0.125,
+    "per_target_change": 0.125
+  },
+  "risk_thresholds": {
+    "dangerous_distance_m": 30000.0,
+    "dangerous_closure_mps": 120.0,
+    "strong_alignment": 0.55,
+    "formation_min_distance_m": 10000.0,
+    "formation_max_distance_m": 45000.0
+  },
+  "notes": "All values are local planning approximations for lightweight rollout scoring, not real F-22 performance or weapon parameters."
+}

@@ -1,0 +1,20 @@
+{
+  "enable_llm": false,
+  "base_url": "https://api.deepseek.com/v1",
+  "api_key": "sk-daabe9b975934c15973ffdf4c245f05a",
+  "model": "deepseek-v4-flash",
+  "timeout_s": 30,
+  "temperature": 0.2,
+  "max_tokens": 4096,
+  "llm_min_call_interval_sim_s": 5,
+  "llm_trigger_mode": "default",
+  "llm_plan_selection": "survival",
+  "llm_plan_selection_mode": "llm",
+  "bvr_hot_launch_range_m": 150000,
+  "bvr_flank_launch_range_m": 115000,
+  "bvr_cold_launch_range_m": 85000,
+  "bvr_crank_angle_deg": 47,
+  "bvr_crank_duration_sim_s": 58,
+  "missile_threat_timeout_sim_s": 110,
+  "missile_defense_duration_sim_s": 72
+}

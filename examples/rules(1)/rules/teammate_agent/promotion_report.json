@@ -1,0 +1,27 @@
+{
+  "decision": "promote",
+  "reasons": [],
+  "metrics": {
+    "matches": 8,
+    "league_score": 1.0,
+    "champion_score": 1.0,
+    "worst_scenario_score": 1.0,
+    "worst_opponent_score": 1.0,
+    "bottom_quartile_score": 1.0,
+    "side_score_gap": 0.0,
+    "candidate_violations": 0,
+    "scenario_scores": {
+      "default": 1.0
+    },
+    "opponent_scores": {
+      "open_policy_v003": 1.0,
+      "strategy3_open_seed": 1.0,
+      "open_policy_v001": 1.0,
+      "open_policy_v002": 1.0
+    },
+    "side_scores": {
+      "blue": 1.0,
+      "red": 1.0
+    }
+  }
+}

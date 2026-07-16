@@ -1,0 +1,248 @@
+{
+  "report_version": 1,
+  "evaluation_mode": "full",
+  "candidate_manifest": "D:\\AIDecision\\air-combat-challenge-main\\examples\\open_policy_v002\\agent.json",
+  "league_config": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_league.json",
+  "run_root": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_runs\\open_policy_editable_02\\generation_001\\attempt_03\\runs\\c8b16f492463",
+  "created_at_unix": 1784185871.349577,
+  "expected_matches": 4,
+  "matches": [
+    {
+      "winner": "blue",
+      "reason": "red_eliminated",
+      "score": 1.0,
+      "executed_steps": 971,
+      "candidate_side": "blue",
+      "candidate_survivors": 2,
+      "opponent_survivors": 0,
+      "candidate_weapons": {
+        "fired": 5,
+        "hit": 2,
+        "missed": 3,
+        "first_fire_step": 115
+      },
+      "opponent_weapons": {
+        "fired": 0,
+        "hit": 0,
+        "missed": 0,
+        "first_fire_step": null
+      },
+      "candidate_tracking": {
+        "observation_steps": 971,
+        "steps_with_enemy_track": 968,
+        "first_enemy_track_step": 1,
+        "ownship_steps": 1942,
+        "ownship_steps_with_detected_target": 1890,
+        "enemy_track_coverage": 0.9969104016477858,
+        "detected_target_coverage": 0.9732234809474768,
+        "no_fire_despite_track": false
+      },
+      "opponent_tracking": {
+        "observation_steps": 971,
+        "steps_with_enemy_track": 236,
+        "first_enemy_track_step": 1,
+        "ownship_steps": 1845,
+        "ownship_steps_with_detected_target": 360,
+        "enemy_track_coverage": 0.243048403707518,
+        "detected_target_coverage": 0.1951219512195122,
+        "no_fire_despite_track": true
+      },
+      "candidate_violations": 0,
+      "opponent_violations": 0,
+      "candidate_action_errors": [],
+      "opponent_action_errors": [],
+      "summary_path": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_runs\\open_policy_editable_02\\generation_001\\attempt_03\\runs\\6313f39bdbe9\\open_policy_v001_default_1_blue\\460c9c11-9572-43fd-8bfb-a318c8369f7b.summary.json",
+      "replay_path": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_runs\\open_policy_editable_02\\generation_001\\attempt_03\\runs\\6313f39bdbe9\\open_policy_v001_default_1_blue\\460c9c11-9572-43fd-8bfb-a318c8369f7b.jsonl",
+      "agent_hashes": {
+        "blue": "e1d1d9e21c5f5fce0191f1eb1d89d478889ecb01b8abe2cc908df63f0037b0cd",
+        "red": "ac476ad908a3e0bbfdbcb3ff7fd5f4a1e4235eb53c4b0f9ad0e299a5782ee5e5"
+      },
+      "scenario_hash": "114d506dbf3b71acf76de24b77b84d07101a81b8fc85b489a7d510e7b84c71c9",
+      "match_id": "open_policy_v001_default_1_blue",
+      "opponent_id": "open_policy_v001",
+      "opponent_role": "champion",
+      "scenario_id": "default",
+      "seed": 1
+    },
+    {
+      "winner": "red",
+      "reason": "blue_eliminated",
+      "score": 1.0,
+      "executed_steps": 1130,
+      "candidate_side": "red",
+      "candidate_survivors": 2,
+      "opponent_survivors": 0,
+      "candidate_weapons": {
+        "fired": 6,
+        "hit": 2,
+        "missed": 3,
+        "first_fire_step": 115
+      },
+      "opponent_weapons": {
+        "fired": 0,
+        "hit": 0,
+        "missed": 0,
+        "first_fire_step": null
+      },
+      "candidate_tracking": {
+        "observation_steps": 1130,
+        "steps_with_enemy_track": 1126,
+        "first_enemy_track_step": 1,
+        "ownship_steps": 2260,
+        "ownship_steps_with_detected_target": 2206,
+        "enemy_track_coverage": 0.9964601769911504,
+        "detected_target_coverage": 0.9761061946902655,
+        "no_fire_despite_track": false
+      },
+      "opponent_tracking": {
+        "observation_steps": 1130,
+        "steps_with_enemy_track": 233,
+        "first_enemy_track_step": 1,
+        "ownship_steps": 2167,
+        "ownship_steps_with_detected_target": 355,
+        "enemy_track_coverage": 0.20619469026548673,
+        "detected_target_coverage": 0.16382095062298108,
+        "no_fire_despite_track": true
+      },
+      "candidate_violations": 0,
+      "opponent_violations": 0,
+      "candidate_action_errors": [],
+      "opponent_action_errors": [],
+      "summary_path": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_runs\\open_policy_editable_02\\generation_001\\attempt_03\\runs\\6313f39bdbe9\\open_policy_v001_default_1_red\\050bfa50-3632-454e-9b4b-e5765422ccb1.summary.json",
+      "replay_path": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_runs\\open_policy_editable_02\\generation_001\\attempt_03\\runs\\6313f39bdbe9\\open_policy_v001_default_1_red\\050bfa50-3632-454e-9b4b-e5765422ccb1.jsonl",
+      "agent_hashes": {
+        "blue": "ac476ad908a3e0bbfdbcb3ff7fd5f4a1e4235eb53c4b0f9ad0e299a5782ee5e5",
+        "red": "e1d1d9e21c5f5fce0191f1eb1d89d478889ecb01b8abe2cc908df63f0037b0cd"
+      },
+      "scenario_hash": "114d506dbf3b71acf76de24b77b84d07101a81b8fc85b489a7d510e7b84c71c9",
+      "match_id": "open_policy_v001_default_1_red",
+      "opponent_id": "open_policy_v001",
+      "opponent_role": "champion",
+      "scenario_id": "default",
+      "seed": 1
+    },
+    {
+      "winner": "blue",
+      "reason": "red_eliminated",
+      "score": 1.0,
+      "executed_steps": 971,
+      "candidate_side": "blue",
+      "candidate_survivors": 2,
+      "opponent_survivors": 0,
+      "candidate_weapons": {
+        "fired": 5,
+        "hit": 2,
+        "missed": 3,
+        "first_fire_step": 115
+      },
+      "opponent_weapons": {
+        "fired": 0,
+        "hit": 0,
+        "missed": 0,
+        "first_fire_step": null
+      },
+      "candidate_tracking": {
+        "observation_steps": 971,
+        "steps_with_enemy_track": 968,
+        "first_enemy_track_step": 1,
+        "ownship_steps": 1942,
+        "ownship_steps_with_detected_target": 1890,
+        "enemy_track_coverage": 0.9969104016477858,
+        "detected_target_coverage": 0.9732234809474768,
+        "no_fire_despite_track": false
+      },
+      "opponent_tracking": {
+        "observation_steps": 971,
+        "steps_with_enemy_track": 236,
+        "first_enemy_track_step": 1,
+        "ownship_steps": 1845,
+        "ownship_steps_with_detected_target": 360,
+        "enemy_track_coverage": 0.243048403707518,
+        "detected_target_coverage": 0.1951219512195122,
+        "no_fire_despite_track": true
+      },
+      "candidate_violations": 0,
+      "opponent_violations": 0,
+      "candidate_action_errors": [],
+      "opponent_action_errors": [],
+      "summary_path": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_runs\\open_policy_editable_02\\generation_001\\attempt_03\\runs\\c8b16f492463\\strategy3_open_seed_default_1_blue\\51c6becf-763c-4fd1-ae67-6fe5945d7b3f.summary.json",
+      "replay_path": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_runs\\open_policy_editable_02\\generation_001\\attempt_03\\runs\\c8b16f492463\\strategy3_open_seed_default_1_blue\\51c6becf-763c-4fd1-ae67-6fe5945d7b3f.jsonl",
+      "agent_hashes": {
+        "blue": "e1d1d9e21c5f5fce0191f1eb1d89d478889ecb01b8abe2cc908df63f0037b0cd",
+        "red": "fcd3f0e4a443ea7a70f61c4b01ae47c93995a7f5e4069173897fbc3a5e365db1"
+      },
+      "scenario_hash": "114d506dbf3b71acf76de24b77b84d07101a81b8fc85b489a7d510e7b84c71c9",
+      "match_id": "strategy3_open_seed_default_1_blue",
+      "opponent_id": "strategy3_open_seed",
+      "opponent_role": "historical_champion",
+      "scenario_id": "default",
+      "seed": 1
+    },
+    {
+      "winner": "red",
+      "reason": "blue_eliminated",
+      "score": 1.0,
+      "executed_steps": 1131,
+      "candidate_side": "red",
+      "candidate_survivors": 2,
+      "opponent_survivors": 0,
+      "candidate_weapons": {
+        "fired": 6,
+        "hit": 2,
+        "missed": 3,
+        "first_fire_step": 115
+      },
+      "opponent_weapons": {
+        "fired": 0,
+        "hit": 0,
+        "missed": 0,
+        "first_fire_step": null
+      },
+      "candidate_tracking": {
+        "observation_steps": 1131,
+        "steps_with_enemy_track": 1127,
+        "first_enemy_track_step": 1,
+        "ownship_steps": 2262,
+        "ownship_steps_with_detected_target": 2207,
+        "enemy_track_coverage": 0.9964633068081344,
+        "detected_target_coverage": 0.9756852343059239,
+        "no_fire_despite_track": false
+      },
+      "opponent_tracking": {
+        "observation_steps": 1131,
+        "steps_with_enemy_track": 233,
+        "first_enemy_track_step": 1,
+        "ownship_steps": 2167,
+        "ownship_steps_with_detected_target": 355,
+        "enemy_track_coverage": 0.20601237842617154,
+        "detected_target_coverage": 0.16382095062298108,
+        "no_fire_despite_track": true
+      },
+      "candidate_violations": 0,
+      "opponent_violations": 0,
+      "candidate_action_errors": [],
+      "opponent_action_errors": [],
+      "summary_path": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_runs\\open_policy_editable_02\\generation_001\\attempt_03\\runs\\c8b16f492463\\strategy3_open_seed_default_1_red\\a00a4723-bf74-49a1-bea2-d039f0b1519d.summary.json",
+      "replay_path": "D:\\AIDecision\\air-combat-challenge-main\\experiments\\bt_league\\open_policy_runs\\open_policy_editable_02\\generation_001\\attempt_03\\runs\\c8b16f492463\\strategy3_open_seed_default_1_red\\a00a4723-bf74-49a1-bea2-d039f0b1519d.jsonl",
+      "agent_hashes": {
+        "blue": "fcd3f0e4a443ea7a70f61c4b01ae47c93995a7f5e4069173897fbc3a5e365db1",
+        "red": "e1d1d9e21c5f5fce0191f1eb1d89d478889ecb01b8abe2cc908df63f0037b0cd"
+      },
+      "scenario_hash": "114d506dbf3b71acf76de24b77b84d07101a81b8fc85b489a7d510e7b84c71c9",
+      "match_id": "strategy3_open_seed_default_1_red",
+      "opponent_id": "strategy3_open_seed",
+      "opponent_role": "historical_champion",
+      "scenario_id": "default",
+      "seed": 1
+    }
+  ],
+  "status": "complete",
+  "completed_at_unix": 1784185888.9529235,
+  "registered_at_unix": 1784185889.0422766,
+  "baseline_registration": {
+    "max_steps": 2000,
+    "scenario_hashes": {
+      "default": "114d506dbf3b71acf76de24b77b84d07101a81b8fc85b489a7d510e7b84c71c9"
+    }
+  }
+}

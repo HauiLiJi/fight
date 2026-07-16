@@ -37,7 +37,16 @@ script void PlatformBroken(WsfPlatform aPlatform)
    event.SetInt("event_id",event_seq);
    event_seq += 1;
    event.SetInt("sim_time",TIME_NOW);
-   event.SetString("event_type","PlatformBroken");
+   if (aPlatform.CategoryMemberOf("missile") || aPlatform.CategoryMemberOf("agm_missile"))
+   {
+      event.SetString("event_type","MissileExpired");
+      event.SetString("event_time_kind","missile_expiry");
+   }
+   else
+   {
+      event.SetString("event_type","PlatformBroken");
+      event.SetString("event_time_kind","damage_assessment");
+   }
    event.SetString("platform",aPlatform.Name());
    if(event_list.Size() == event_max_size)
    {
@@ -56,8 +65,9 @@ script void WeaponHit(WsfWeaponEngagement aWeaponEngagement, WsfPlatform aTarget
    event = WsfJsonObject.Create();
    event.SetInt("event_id",event_seq);
    event_seq += 1;
-   event.SetInt("sim_time",aWeaponEngagement.StartTime());
+   event.SetInt("sim_time",TIME_NOW);
    event.SetString("event_type","WeaponHit");
+   event.SetString("event_time_kind","hit_assessment");
    event.SetString("shooter",aWeaponEngagement.FiringPlatformName());
    event.SetString("weapon",aWeaponEngagement.WeaponSystemType());
    event.SetString("target",aWeaponEngagement.TargetPlatformName());
@@ -79,8 +89,9 @@ script void WeaponMissed(WsfWeaponEngagement aWeaponEngagement, WsfPlatform aTar
    event = WsfJsonObject.Create();
    event.SetInt("event_id",event_seq);
    event_seq += 1;
-   event.SetInt("sim_time",aWeaponEngagement.StartTime());
+   event.SetInt("sim_time",TIME_NOW);
    event.SetString("event_type","WeaponMissed");
+   event.SetString("event_time_kind","missile_expiry");
    event.SetString("shooter",aWeaponEngagement.FiringPlatformName());
    event.SetString("weapon",aWeaponEngagement.WeaponSystemType());
    event.SetString("target",aWeaponEngagement.TargetPlatformName());
@@ -104,6 +115,7 @@ script void WeaponFired(WsfWeaponEngagement aWeaponEngagement, WsfTrack aTargetT
    event_seq += 1;
    event.SetInt("sim_time",aWeaponEngagement.StartTime());
    event.SetString("event_type","WeaponFired");
+   event.SetString("event_time_kind","launch");
    event.SetString("shooter",aWeaponEngagement.FiringPlatformName());
    event.SetString("weapon",aWeaponEngagement.WeaponSystemType());
    event.SetString("target",aWeaponEngagement.TargetPlatformName());
@@ -128,6 +140,7 @@ script void SensorTurnedOff(WsfPlatform aPlatform, WsfSensor aSensor)
    event_seq += 1;
    event.SetInt("sim_time",TIME_NOW);
    event.SetString("event_type","SensorTurnedOff");
+   event.SetString("event_time_kind","sensor_deactivation");
    event.SetString("platform",aPlatform.Name());
    event.SetString("sensor",aSensor.Name());
    
@@ -150,6 +163,14 @@ script void SensorTurnedOn(WsfPlatform aPlatform, WsfSensor aSensor)
    event_seq += 1;
    event.SetInt("sim_time",TIME_NOW);
    event.SetString("event_type","SensorTurnedOn");
+   if (aPlatform.CategoryMemberOf("missile") || aPlatform.CategoryMemberOf("agm_missile"))
+   {
+      event.SetString("event_time_kind","seeker_activation");
+   }
+   else
+   {
+      event.SetString("event_time_kind","sensor_activation");
+   }
    event.SetString("platform",aPlatform.Name());
    event.SetString("sensor",aSensor.Name());
    
@@ -349,7 +370,6 @@ script void OutputData()
   red.Clear();
   blue.Clear();
 end_script
-
 
 
 

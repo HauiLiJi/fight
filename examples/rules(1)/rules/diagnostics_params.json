@@ -1,0 +1,12 @@
+{
+  "parameter_source": "expert_initialized",
+  "enabled_by_default": false,
+  "memory_history_size": 128,
+  "flush_every_steps": 10,
+  "max_error_text_chars": 500,
+  "max_rationale_items": 3,
+  "max_ranked_plans_logged": 5,
+  "record_candidate_breakdown": true,
+  "max_candidates_logged": 16,
+  "notes": "Local diagnostics limits only; diagnostics are disabled unless explicitly enabled by environment."
+}

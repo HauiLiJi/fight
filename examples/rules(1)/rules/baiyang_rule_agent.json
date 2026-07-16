@@ -1,0 +1,6 @@
+{
+  "api_version": "1.0",
+  "topology": "team",
+  "entrypoint": "baiyang_rule.py",
+  "step_timeout_s": 5.0
+}

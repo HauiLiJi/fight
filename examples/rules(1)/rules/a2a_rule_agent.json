@@ -1,0 +1,6 @@
+{
+  "api_version": "1.0",
+  "topology": "per_aircraft",
+  "entrypoint": "a2a_rule.py",
+  "step_timeout_s": 5.0
+}

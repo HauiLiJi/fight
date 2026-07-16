@@ -1,0 +1,6 @@
+{
+  "api_version": "1.0",
+  "topology": "team",
+  "entrypoint": "agent.py",
+  "step_timeout_s": 35.0
+}
